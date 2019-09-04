@@ -30,10 +30,11 @@ import com.amazonaws.AmazonWebServiceRequest;
  * <code>JobId</code>) that you use to get the results of the operation. When
  * face detection is finished, Amazon Rekognition Video publishes a completion
  * status to the Amazon Simple Notification Service topic that you specify in
- * <code>NotificationChannel</code>. To get the results of the label detection
+ * <code>NotificationChannel</code>. To get the results of the face detection
  * operation, first check that the status value published to the Amazon SNS
- * topic is <code>SUCCEEDED</code>. If so, call and pass the job identifier (
- * <code>JobId</code>) from the initial call to <code>StartFaceDetection</code>.
+ * topic is <code>SUCCEEDED</code>. If so, call <a>GetFaceDetection</a> and pass
+ * the job identifier (<code>JobId</code>) from the initial call to
+ * <code>StartFaceDetection</code>.
  * </p>
  * <p>
  * For more information, see Detecting Faces in a Stored Video in the Amazon
@@ -90,8 +91,10 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -459,8 +462,10 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -468,9 +473,11 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @return <p>
-     *         Unique identifier you specify to identify the job in the
-     *         completion status published to the Amazon Simple Notification
-     *         Service topic.
+     *         An identifier you specify that's returned in the completion
+     *         notification that's published to your Amazon Simple Notification
+     *         Service topic. For example, you can use <code>JobTag</code> to
+     *         group related jobs and identify them in the completion
+     *         notification.
      *         </p>
      */
     public String getJobTag() {
@@ -479,8 +486,10 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -488,9 +497,11 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @param jobTag <p>
-     *            Unique identifier you specify to identify the job in the
-     *            completion status published to the Amazon Simple Notification
-     *            Service topic.
+     *            An identifier you specify that's returned in the completion
+     *            notification that's published to your Amazon Simple
+     *            Notification Service topic. For example, you can use
+     *            <code>JobTag</code> to group related jobs and identify them in
+     *            the completion notification.
      *            </p>
      */
     public void setJobTag(String jobTag) {
@@ -499,8 +510,10 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -511,9 +524,11 @@ public class StartFaceDetectionRequest extends AmazonWebServiceRequest implement
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @param jobTag <p>
-     *            Unique identifier you specify to identify the job in the
-     *            completion status published to the Amazon Simple Notification
-     *            Service topic.
+     *            An identifier you specify that's returned in the completion
+     *            notification that's published to your Amazon Simple
+     *            Notification Service topic. For example, you can use
+     *            <code>JobTag</code> to group related jobs and identify them in
+     *            the completion notification.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.

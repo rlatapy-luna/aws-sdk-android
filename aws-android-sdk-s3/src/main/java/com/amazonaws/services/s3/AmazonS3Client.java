@@ -201,7 +201,7 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
     private static final RequestPaymentConfigurationXmlFactory requestPaymentConfigurationXmlFactory = new RequestPaymentConfigurationXmlFactory();
 
     /** S3 specific client configuration options */
-    private S3ClientOptions clientOptions = new S3ClientOptions();
+    protected S3ClientOptions clientOptions = new S3ClientOptions();
 
     /** Provider for AWS credentials. */
     private final AWSCredentialsProvider awsCredentialsProvider;
@@ -1624,12 +1624,13 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
                         ProgressEvent.STARTED_EVENT_CODE);
             }
 
+
             // The Etag header contains a server-side MD5 of the object. If
             // we're downloading the whole object, by default we wrap the
             // stream in a validator that calculates an MD5 of the downloaded
             // bytes and complains if what we received doesn't match the Etag.
-            if (!ServiceUtils.skipMd5CheckPerRequest(getObjectRequest)
-                    && !ServiceUtils.skipMd5CheckPerResponse(s3Object.getObjectMetadata())) {
+            if (!ServiceUtils.skipMd5CheckPerRequest(getObjectRequest, clientOptions)
+                    && !ServiceUtils.skipMd5CheckPerResponse(s3Object.getObjectMetadata(), clientOptions)) {
                 byte[] serverSideHash = null;
                 final String etag = s3Object.getObjectMetadata().getETag();
                 if (etag != null && ServiceUtils.isMultipartUploadETag(etag) == false) {
@@ -1706,7 +1707,7 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
 
                     @Override
                     public boolean needIntegrityCheck() {
-                        return !ServiceUtils.skipMd5CheckPerRequest(getObjectRequest);
+                        return !ServiceUtils.skipMd5CheckPerRequest(getObjectRequest, clientOptions);
                     }
 
                 }, mode);
@@ -1810,7 +1811,7 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
         assertParameterNotNull(key, "The key parameter must be specified when uploading an object");
 
         final boolean skipContentMd5Check = ServiceUtils
-                .skipMd5CheckPerRequest(putObjectRequest);
+                .skipMd5CheckPerRequest(putObjectRequest, clientOptions);
 
         // If a file is specified for upload, we need to pull some additional
         // information from it to auto-configure a few options
@@ -3670,6 +3671,8 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
             populateRequestMetadata(request, initiateMultipartUploadRequest.objectMetadata);
         }
 
+        addHeaderIfNotNull(request, Headers.S3_TAGGING, urlEncodeTags(initiateMultipartUploadRequest.getTagging()));
+
         populateRequesterPaysHeader(request, initiateMultipartUploadRequest.isRequesterPays());
 
         // Populate the SSE-C parameters to the request header
@@ -3824,7 +3827,6 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
         if (objectMetadata != null) {
             populateRequestMetadata(request, objectMetadata);
         }
-
         addHeaderIfNotNull(request, Headers.CONTENT_MD5, uploadPartRequest.getMd5Digest());
         request.addHeader(Headers.CONTENT_LENGTH, Long.toString(partSize));
         /*
@@ -3854,7 +3856,7 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
 
         MD5DigestCalculatingInputStream md5DigestStream = null;
         if (uploadPartRequest.getMd5Digest() == null
-                && !ServiceUtils.skipMd5CheckPerRequest(uploadPartRequest)) {
+                && !ServiceUtils.skipMd5CheckPerRequest(uploadPartRequest, clientOptions)) {
             /*
              * If the user hasn't set the content MD5, then we don't want to
              * buffer the whole stream in memory just to calculate it. Instead,
@@ -3885,7 +3887,7 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
                     key);
 
             if (metadata != null && md5DigestStream != null
-                    && !ServiceUtils.skipMd5CheckPerResponse(metadata)) {
+                    && !ServiceUtils.skipMd5CheckPerResponse(metadata, clientOptions)) {
                 final byte[] clientSideHash = md5DigestStream.getMd5Digest();
                 final byte[] serverSideHash = BinaryUtils.fromHex(metadata.getETag());
 
@@ -4408,7 +4410,9 @@ public class AmazonS3Client extends AmazonWebServiceClient implements AmazonS3 {
                 if (value != null) {
                     value = value.trim();
                 }
-                request.addHeader(Headers.S3_USER_METADATA_PREFIX + key, value);
+                if (!Headers.S3_TAGGING.equals(key)) {
+                    request.addHeader(Headers.S3_USER_METADATA_PREFIX + key, value);
+                }
             }
         }
     }

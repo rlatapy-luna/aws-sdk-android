@@ -21,23 +21,23 @@ import com.amazonaws.AmazonWebServiceRequest;
 
 /**
  * <p>
- * Starts asynchronous detection of explicit or suggestive adult content in a
- * stored video.
+ * Starts asynchronous detection of unsafe content in a stored video.
  * </p>
  * <p>
  * Amazon Rekognition Video can moderate content in a video stored in an Amazon
  * S3 bucket. Use <a>Video</a> to specify the bucket name and the filename of
  * the video. <code>StartContentModeration</code> returns a job identifier (
  * <code>JobId</code>) which you use to get the results of the analysis. When
- * content moderation analysis is finished, Amazon Rekognition Video publishes a
+ * unsafe content analysis is finished, Amazon Rekognition Video publishes a
  * completion status to the Amazon Simple Notification Service topic that you
  * specify in <code>NotificationChannel</code>.
  * </p>
  * <p>
- * To get the results of the content moderation analysis, first check that the
+ * To get the results of the unsafe content analysis, first check that the
  * status value published to the Amazon SNS topic is <code>SUCCEEDED</code>. If
- * so, call and pass the job identifier (<code>JobId</code>) from the initial
- * call to <code>StartContentModeration</code>.
+ * so, call <a>GetContentModeration</a> and pass the job identifier (
+ * <code>JobId</code>) from the initial call to
+ * <code>StartContentModeration</code>.
  * </p>
  * <p>
  * For more information, see Detecting Unsafe Content in the Amazon Rekognition
@@ -47,8 +47,8 @@ import com.amazonaws.AmazonWebServiceRequest;
 public class StartContentModerationRequest extends AmazonWebServiceRequest implements Serializable {
     /**
      * <p>
-     * The video in which you want to moderate content. The video must be stored
-     * in an Amazon S3 bucket.
+     * The video in which you want to detect unsafe content. The video must be
+     * stored in an Amazon S3 bucket.
      * </p>
      */
     private Video video;
@@ -60,7 +60,9 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * certain Amazon Rekognition is that the moderated content is correctly
      * identified. 0 is the lowest confidence. 100 is the highest confidence.
      * Amazon Rekognition doesn't return any moderated content labels with a
-     * confidence level lower than this specified value.
+     * confidence level lower than this specified value. If you don't specify
+     * <code>MinConfidence</code>, <code>GetContentModeration</code> returns
+     * labels with confidence values greater than or equal to 50 percent.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -85,15 +87,17 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The Amazon SNS topic ARN that you want Amazon Rekognition Video to
-     * publish the completion status of the content moderation analysis to.
+     * publish the completion status of the unsafe content analysis to.
      * </p>
      */
     private NotificationChannel notificationChannel;
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -104,13 +108,13 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The video in which you want to moderate content. The video must be stored
-     * in an Amazon S3 bucket.
+     * The video in which you want to detect unsafe content. The video must be
+     * stored in an Amazon S3 bucket.
      * </p>
      *
      * @return <p>
-     *         The video in which you want to moderate content. The video must
-     *         be stored in an Amazon S3 bucket.
+     *         The video in which you want to detect unsafe content. The video
+     *         must be stored in an Amazon S3 bucket.
      *         </p>
      */
     public Video getVideo() {
@@ -119,13 +123,13 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The video in which you want to moderate content. The video must be stored
-     * in an Amazon S3 bucket.
+     * The video in which you want to detect unsafe content. The video must be
+     * stored in an Amazon S3 bucket.
      * </p>
      *
      * @param video <p>
-     *            The video in which you want to moderate content. The video
-     *            must be stored in an Amazon S3 bucket.
+     *            The video in which you want to detect unsafe content. The
+     *            video must be stored in an Amazon S3 bucket.
      *            </p>
      */
     public void setVideo(Video video) {
@@ -134,16 +138,16 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The video in which you want to moderate content. The video must be stored
-     * in an Amazon S3 bucket.
+     * The video in which you want to detect unsafe content. The video must be
+     * stored in an Amazon S3 bucket.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
      * together.
      *
      * @param video <p>
-     *            The video in which you want to moderate content. The video
-     *            must be stored in an Amazon S3 bucket.
+     *            The video in which you want to detect unsafe content. The
+     *            video must be stored in an Amazon S3 bucket.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -160,7 +164,9 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * certain Amazon Rekognition is that the moderated content is correctly
      * identified. 0 is the lowest confidence. 100 is the highest confidence.
      * Amazon Rekognition doesn't return any moderated content labels with a
-     * confidence level lower than this specified value.
+     * confidence level lower than this specified value. If you don't specify
+     * <code>MinConfidence</code>, <code>GetContentModeration</code> returns
+     * labels with confidence values greater than or equal to 50 percent.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -173,7 +179,9 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      *         content is correctly identified. 0 is the lowest confidence. 100
      *         is the highest confidence. Amazon Rekognition doesn't return any
      *         moderated content labels with a confidence level lower than this
-     *         specified value.
+     *         specified value. If you don't specify <code>MinConfidence</code>,
+     *         <code>GetContentModeration</code> returns labels with confidence
+     *         values greater than or equal to 50 percent.
      *         </p>
      */
     public Float getMinConfidence() {
@@ -187,7 +195,9 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * certain Amazon Rekognition is that the moderated content is correctly
      * identified. 0 is the lowest confidence. 100 is the highest confidence.
      * Amazon Rekognition doesn't return any moderated content labels with a
-     * confidence level lower than this specified value.
+     * confidence level lower than this specified value. If you don't specify
+     * <code>MinConfidence</code>, <code>GetContentModeration</code> returns
+     * labels with confidence values greater than or equal to 50 percent.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -200,7 +210,10 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      *            moderated content is correctly identified. 0 is the lowest
      *            confidence. 100 is the highest confidence. Amazon Rekognition
      *            doesn't return any moderated content labels with a confidence
-     *            level lower than this specified value.
+     *            level lower than this specified value. If you don't specify
+     *            <code>MinConfidence</code>, <code>GetContentModeration</code>
+     *            returns labels with confidence values greater than or equal to
+     *            50 percent.
      *            </p>
      */
     public void setMinConfidence(Float minConfidence) {
@@ -214,7 +227,9 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * certain Amazon Rekognition is that the moderated content is correctly
      * identified. 0 is the lowest confidence. 100 is the highest confidence.
      * Amazon Rekognition doesn't return any moderated content labels with a
-     * confidence level lower than this specified value.
+     * confidence level lower than this specified value. If you don't specify
+     * <code>MinConfidence</code>, <code>GetContentModeration</code> returns
+     * labels with confidence values greater than or equal to 50 percent.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -230,7 +245,10 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      *            moderated content is correctly identified. 0 is the lowest
      *            confidence. 100 is the highest confidence. Amazon Rekognition
      *            doesn't return any moderated content labels with a confidence
-     *            level lower than this specified value.
+     *            level lower than this specified value. If you don't specify
+     *            <code>MinConfidence</code>, <code>GetContentModeration</code>
+     *            returns labels with confidence values greater than or equal to
+     *            50 percent.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -323,13 +341,13 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The Amazon SNS topic ARN that you want Amazon Rekognition Video to
-     * publish the completion status of the content moderation analysis to.
+     * publish the completion status of the unsafe content analysis to.
      * </p>
      *
      * @return <p>
      *         The Amazon SNS topic ARN that you want Amazon Rekognition Video
-     *         to publish the completion status of the content moderation
-     *         analysis to.
+     *         to publish the completion status of the unsafe content analysis
+     *         to.
      *         </p>
      */
     public NotificationChannel getNotificationChannel() {
@@ -339,13 +357,13 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The Amazon SNS topic ARN that you want Amazon Rekognition Video to
-     * publish the completion status of the content moderation analysis to.
+     * publish the completion status of the unsafe content analysis to.
      * </p>
      *
      * @param notificationChannel <p>
      *            The Amazon SNS topic ARN that you want Amazon Rekognition
-     *            Video to publish the completion status of the content
-     *            moderation analysis to.
+     *            Video to publish the completion status of the unsafe content
+     *            analysis to.
      *            </p>
      */
     public void setNotificationChannel(NotificationChannel notificationChannel) {
@@ -355,7 +373,7 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The Amazon SNS topic ARN that you want Amazon Rekognition Video to
-     * publish the completion status of the content moderation analysis to.
+     * publish the completion status of the unsafe content analysis to.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -363,8 +381,8 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      *
      * @param notificationChannel <p>
      *            The Amazon SNS topic ARN that you want Amazon Rekognition
-     *            Video to publish the completion status of the content
-     *            moderation analysis to.
+     *            Video to publish the completion status of the unsafe content
+     *            analysis to.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -377,8 +395,10 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -386,9 +406,11 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @return <p>
-     *         Unique identifier you specify to identify the job in the
-     *         completion status published to the Amazon Simple Notification
-     *         Service topic.
+     *         An identifier you specify that's returned in the completion
+     *         notification that's published to your Amazon Simple Notification
+     *         Service topic. For example, you can use <code>JobTag</code> to
+     *         group related jobs and identify them in the completion
+     *         notification.
      *         </p>
      */
     public String getJobTag() {
@@ -397,8 +419,10 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -406,9 +430,11 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @param jobTag <p>
-     *            Unique identifier you specify to identify the job in the
-     *            completion status published to the Amazon Simple Notification
-     *            Service topic.
+     *            An identifier you specify that's returned in the completion
+     *            notification that's published to your Amazon Simple
+     *            Notification Service topic. For example, you can use
+     *            <code>JobTag</code> to group related jobs and identify them in
+     *            the completion notification.
      *            </p>
      */
     public void setJobTag(String jobTag) {
@@ -417,8 +443,10 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * Unique identifier you specify to identify the job in the completion
-     * status published to the Amazon Simple Notification Service topic.
+     * An identifier you specify that's returned in the completion notification
+     * that's published to your Amazon Simple Notification Service topic. For
+     * example, you can use <code>JobTag</code> to group related jobs and
+     * identify them in the completion notification.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -429,9 +457,11 @@ public class StartContentModerationRequest extends AmazonWebServiceRequest imple
      * <b>Pattern: </b>[a-zA-Z0-9_.\-:]+<br/>
      *
      * @param jobTag <p>
-     *            Unique identifier you specify to identify the job in the
-     *            completion status published to the Amazon Simple Notification
-     *            Service topic.
+     *            An identifier you specify that's returned in the completion
+     *            notification that's published to your Amazon Simple
+     *            Notification Service topic. For example, you can use
+     *            <code>JobTag</code> to group related jobs and identify them in
+     *            the completion notification.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.

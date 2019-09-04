@@ -20,20 +20,28 @@ import java.io.Serializable;
 public class DetectModerationLabelsResult implements Serializable {
     /**
      * <p>
-     * Array of detected Moderation labels and the time, in millseconds from the
-     * start of the video, they were detected.
+     * Array of detected Moderation labels and the time, in milliseconds from
+     * the start of the video, they were detected.
      * </p>
      */
     private java.util.List<ModerationLabel> moderationLabels;
 
     /**
      * <p>
-     * Array of detected Moderation labels and the time, in millseconds from the
-     * start of the video, they were detected.
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
+     */
+    private String moderationModelVersion;
+
+    /**
+     * <p>
+     * Array of detected Moderation labels and the time, in milliseconds from
+     * the start of the video, they were detected.
      * </p>
      *
      * @return <p>
-     *         Array of detected Moderation labels and the time, in millseconds
+     *         Array of detected Moderation labels and the time, in milliseconds
      *         from the start of the video, they were detected.
      *         </p>
      */
@@ -43,13 +51,13 @@ public class DetectModerationLabelsResult implements Serializable {
 
     /**
      * <p>
-     * Array of detected Moderation labels and the time, in millseconds from the
-     * start of the video, they were detected.
+     * Array of detected Moderation labels and the time, in milliseconds from
+     * the start of the video, they were detected.
      * </p>
      *
      * @param moderationLabels <p>
      *            Array of detected Moderation labels and the time, in
-     *            millseconds from the start of the video, they were detected.
+     *            milliseconds from the start of the video, they were detected.
      *            </p>
      */
     public void setModerationLabels(java.util.Collection<ModerationLabel> moderationLabels) {
@@ -63,8 +71,8 @@ public class DetectModerationLabelsResult implements Serializable {
 
     /**
      * <p>
-     * Array of detected Moderation labels and the time, in millseconds from the
-     * start of the video, they were detected.
+     * Array of detected Moderation labels and the time, in milliseconds from
+     * the start of the video, they were detected.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -72,7 +80,7 @@ public class DetectModerationLabelsResult implements Serializable {
      *
      * @param moderationLabels <p>
      *            Array of detected Moderation labels and the time, in
-     *            millseconds from the start of the video, they were detected.
+     *            milliseconds from the start of the video, they were detected.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -90,8 +98,8 @@ public class DetectModerationLabelsResult implements Serializable {
 
     /**
      * <p>
-     * Array of detected Moderation labels and the time, in millseconds from the
-     * start of the video, they were detected.
+     * Array of detected Moderation labels and the time, in milliseconds from
+     * the start of the video, they were detected.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -99,7 +107,7 @@ public class DetectModerationLabelsResult implements Serializable {
      *
      * @param moderationLabels <p>
      *            Array of detected Moderation labels and the time, in
-     *            millseconds from the start of the video, they were detected.
+     *            milliseconds from the start of the video, they were detected.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -107,6 +115,57 @@ public class DetectModerationLabelsResult implements Serializable {
     public DetectModerationLabelsResult withModerationLabels(
             java.util.Collection<ModerationLabel> moderationLabels) {
         setModerationLabels(moderationLabels);
+        return this;
+    }
+
+    /**
+     * <p>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
+     *
+     * @return <p>
+     *         Version number of the moderation detection model that was used to
+     *         detect unsafe content.
+     *         </p>
+     */
+    public String getModerationModelVersion() {
+        return moderationModelVersion;
+    }
+
+    /**
+     * <p>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
+     *
+     * @param moderationModelVersion <p>
+     *            Version number of the moderation detection model that was used
+     *            to detect unsafe content.
+     *            </p>
+     */
+    public void setModerationModelVersion(String moderationModelVersion) {
+        this.moderationModelVersion = moderationModelVersion;
+    }
+
+    /**
+     * <p>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
+     * <p>
+     * Returns a reference to this object so that method calls can be chained
+     * together.
+     *
+     * @param moderationModelVersion <p>
+     *            Version number of the moderation detection model that was used
+     *            to detect unsafe content.
+     *            </p>
+     * @return A reference to this updated object so that method calls can be
+     *         chained together.
+     */
+    public DetectModerationLabelsResult withModerationModelVersion(String moderationModelVersion) {
+        this.moderationModelVersion = moderationModelVersion;
         return this;
     }
 
@@ -122,7 +181,9 @@ public class DetectModerationLabelsResult implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         if (getModerationLabels() != null)
-            sb.append("ModerationLabels: " + getModerationLabels());
+            sb.append("ModerationLabels: " + getModerationLabels() + ",");
+        if (getModerationModelVersion() != null)
+            sb.append("ModerationModelVersion: " + getModerationModelVersion());
         sb.append("}");
         return sb.toString();
     }
@@ -134,6 +195,10 @@ public class DetectModerationLabelsResult implements Serializable {
 
         hashCode = prime * hashCode
                 + ((getModerationLabels() == null) ? 0 : getModerationLabels().hashCode());
+        hashCode = prime
+                * hashCode
+                + ((getModerationModelVersion() == null) ? 0 : getModerationModelVersion()
+                        .hashCode());
         return hashCode;
     }
 
@@ -152,6 +217,11 @@ public class DetectModerationLabelsResult implements Serializable {
             return false;
         if (other.getModerationLabels() != null
                 && other.getModerationLabels().equals(this.getModerationLabels()) == false)
+            return false;
+        if (other.getModerationModelVersion() == null ^ this.getModerationModelVersion() == null)
+            return false;
+        if (other.getModerationModelVersion() != null
+                && other.getModerationModelVersion().equals(this.getModerationModelVersion()) == false)
             return false;
         return true;
     }

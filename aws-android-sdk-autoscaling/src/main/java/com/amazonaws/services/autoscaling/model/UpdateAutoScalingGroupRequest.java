@@ -24,44 +24,61 @@ import com.amazonaws.AmazonWebServiceRequest;
  * Updates the configuration for the specified Auto Scaling group.
  * </p>
  * <p>
- * The new settings take effect on any scaling activities after this call
- * returns. Scaling activities that are currently in progress aren't affected.
+ * To update an Auto Scaling group, specify the name of the group and the
+ * parameter that you want to change. Any parameters that you don't specify are
+ * not changed by this update request. The new settings take effect on any
+ * scaling activities after this call returns. Scaling activities that are
+ * currently in progress aren't affected.
  * </p>
  * <p>
- * To update an Auto Scaling group with a launch configuration with
- * <code>InstanceMonitoring</code> set to <code>false</code>, you must first
- * disable the collection of group metrics. Otherwise, you get an error. If you
- * have previously enabled the collection of group metrics, you can disable it
- * using <a>DisableMetricsCollection</a>.
+ * If you associate a new launch configuration or template with an Auto Scaling
+ * group, all new instances will get the updated configuration. Existing
+ * instances continue to run with the configuration that they were originally
+ * launched with. When you update a group to specify a mixed instances policy
+ * instead of a launch configuration or template, existing instances may be
+ * replaced to match the new purchasing options that you specified in the
+ * policy. For example, if the group currently has 100% On-Demand capacity and
+ * the policy specifies 50% Spot capacity, this means that half of your
+ * instances will be gradually terminated and relaunched as Spot Instances. When
+ * replacing instances, Amazon EC2 Auto Scaling launches new instances before
+ * terminating the old ones, so that updating your group does not compromise the
+ * performance or availability of your application.
  * </p>
  * <p>
- * Note the following:
+ * Note the following about changing <code>DesiredCapacity</code>,
+ * <code>MaxSize</code>, or <code>MinSize</code>:
  * </p>
  * <ul>
  * <li>
  * <p>
+ * If a scale-in event occurs as a result of a new <code>DesiredCapacity</code>
+ * value that is lower than the current size of the group, the Auto Scaling
+ * group uses its termination policy to determine which instances to terminate.
+ * </p>
+ * </li>
+ * <li>
+ * <p>
  * If you specify a new value for <code>MinSize</code> without specifying a
  * value for <code>DesiredCapacity</code>, and the new <code>MinSize</code> is
- * larger than the current size of the group, we implicitly call
- * <a>SetDesiredCapacity</a> to set the size of the group to the new value of
- * <code>MinSize</code>.
+ * larger than the current size of the group, this sets the group's
+ * <code>DesiredCapacity</code> to the new <code>MinSize</code> value.
  * </p>
  * </li>
  * <li>
  * <p>
  * If you specify a new value for <code>MaxSize</code> without specifying a
  * value for <code>DesiredCapacity</code>, and the new <code>MaxSize</code> is
- * smaller than the current size of the group, we implicitly call
- * <a>SetDesiredCapacity</a> to set the size of the group to the new value of
- * <code>MaxSize</code>.
- * </p>
- * </li>
- * <li>
- * <p>
- * All other optional parameters are left unchanged if not specified.
+ * smaller than the current size of the group, this sets the group's
+ * <code>DesiredCapacity</code> to the new <code>MaxSize</code> value.
  * </p>
  * </li>
  * </ul>
+ * <p>
+ * To see which parameters have been set, use <a>DescribeAutoScalingGroups</a>.
+ * You can also view the scaling policies for an Auto Scaling group using
+ * <a>DescribePolicies</a>. If the group has scaling policies, you can update
+ * them using <a>PutScalingPolicy</a>.
+ * </p>
  */
 public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest implements Serializable {
     /**
@@ -78,9 +95,19 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The name of the launch configuration. If you specify this parameter, you
-     * can't specify a launch template or a mixed instances policy.
+     * The name of the launch configuration. If you specify
+     * <code>LaunchConfigurationName</code> in your update request, you can't
+     * specify <code>LaunchTemplate</code> or <code>MixedInstancesPolicy</code>.
      * </p>
+     * <important>
+     * <p>
+     * To update an Auto Scaling group with a launch configuration with
+     * <code>InstanceMonitoring</code> set to <code>false</code>, you must first
+     * disable the collection of group metrics. Otherwise, you get an error. If
+     * you have previously enabled the collection of group metrics, you can
+     * disable it using <a>DisableMetricsCollection</a>.
+     * </p>
+     * </important>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Length: </b>1 - 1600<br/>
@@ -92,20 +119,33 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The launch template and version to use to specify the updates. If you
-     * specify this parameter, you can't specify a launch configuration or a
-     * mixed instances policy.
+     * specify <code>LaunchTemplate</code> in your update request, you can't
+     * specify <code>LaunchConfigurationName</code> or
+     * <code>MixedInstancesPolicy</code>.
+     * </p>
+     * <p>
+     * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     * >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i>.
      * </p>
      */
     private LaunchTemplateSpecification launchTemplate;
 
     /**
      * <p>
-     * The mixed instances policy to use to specify the updates. If you specify
-     * this parameter, you can't specify a launch configuration or a launch
-     * template.
+     * An embedded object that specifies a mixed instances policy.
+     * </p>
+     * <p>
+     * In your call to <code>UpdateAutoScalingGroup</code>, you can make changes
+     * to the policy that is specified. All optional parameters are left
+     * unchanged if not specified.
      * </p>
      * <p>
      * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     * >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i> and <a href=
      * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      * >Auto Scaling Groups with Multiple Instance Types and Purchase
      * Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
@@ -140,11 +180,14 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <p>
      * The amount of time, in seconds, after a scaling activity completes before
      * another scaling activity can start. The default value is <code>300</code>
-     * .
+     * . This cooldown period is not used when a scaling-specific cooldown is
+     * specified.
      * </p>
      * <p>
-     * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
+     * Cooldown periods are not supported for target tracking scaling policies,
+     * step scaling policies, or scheduled scaling. For more information, see <a
+     * href
+     * ="https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      * >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      */
@@ -180,9 +223,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * </p>
      * <p>
      * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     * >Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto
-     * Scaling User Guide</i>.
+     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     * >Health Check Grace Period</a> in the <i>Amazon EC2 Auto Scaling User
+     * Guide</i>.
      * </p>
      * <p>
      * Conditional: This parameter is required if you are adding an
@@ -211,7 +254,7 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * A comma-separated list of subnet IDs, if you are launching into a VPC.
+     * A comma-separated list of subnet IDs for virtual private cloud (VPC).
      * </p>
      * <p>
      * If you specify <code>VPCZoneIdentifier</code> with
@@ -335,9 +378,19 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The name of the launch configuration. If you specify this parameter, you
-     * can't specify a launch template or a mixed instances policy.
+     * The name of the launch configuration. If you specify
+     * <code>LaunchConfigurationName</code> in your update request, you can't
+     * specify <code>LaunchTemplate</code> or <code>MixedInstancesPolicy</code>.
      * </p>
+     * <important>
+     * <p>
+     * To update an Auto Scaling group with a launch configuration with
+     * <code>InstanceMonitoring</code> set to <code>false</code>, you must first
+     * disable the collection of group metrics. Otherwise, you get an error. If
+     * you have previously enabled the collection of group metrics, you can
+     * disable it using <a>DisableMetricsCollection</a>.
+     * </p>
+     * </important>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Length: </b>1 - 1600<br/>
@@ -345,10 +398,21 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @return <p>
-     *         The name of the launch configuration. If you specify this
-     *         parameter, you can't specify a launch template or a mixed
-     *         instances policy.
+     *         The name of the launch configuration. If you specify
+     *         <code>LaunchConfigurationName</code> in your update request, you
+     *         can't specify <code>LaunchTemplate</code> or
+     *         <code>MixedInstancesPolicy</code>.
      *         </p>
+     *         <important>
+     *         <p>
+     *         To update an Auto Scaling group with a launch configuration with
+     *         <code>InstanceMonitoring</code> set to <code>false</code>, you
+     *         must first disable the collection of group metrics. Otherwise,
+     *         you get an error. If you have previously enabled the collection
+     *         of group metrics, you can disable it using
+     *         <a>DisableMetricsCollection</a>.
+     *         </p>
+     *         </important>
      */
     public String getLaunchConfigurationName() {
         return launchConfigurationName;
@@ -356,9 +420,19 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The name of the launch configuration. If you specify this parameter, you
-     * can't specify a launch template or a mixed instances policy.
+     * The name of the launch configuration. If you specify
+     * <code>LaunchConfigurationName</code> in your update request, you can't
+     * specify <code>LaunchTemplate</code> or <code>MixedInstancesPolicy</code>.
      * </p>
+     * <important>
+     * <p>
+     * To update an Auto Scaling group with a launch configuration with
+     * <code>InstanceMonitoring</code> set to <code>false</code>, you must first
+     * disable the collection of group metrics. Otherwise, you get an error. If
+     * you have previously enabled the collection of group metrics, you can
+     * disable it using <a>DisableMetricsCollection</a>.
+     * </p>
+     * </important>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Length: </b>1 - 1600<br/>
@@ -366,10 +440,21 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @param launchConfigurationName <p>
-     *            The name of the launch configuration. If you specify this
-     *            parameter, you can't specify a launch template or a mixed
-     *            instances policy.
+     *            The name of the launch configuration. If you specify
+     *            <code>LaunchConfigurationName</code> in your update request,
+     *            you can't specify <code>LaunchTemplate</code> or
+     *            <code>MixedInstancesPolicy</code>.
      *            </p>
+     *            <important>
+     *            <p>
+     *            To update an Auto Scaling group with a launch configuration
+     *            with <code>InstanceMonitoring</code> set to <code>false</code>
+     *            , you must first disable the collection of group metrics.
+     *            Otherwise, you get an error. If you have previously enabled
+     *            the collection of group metrics, you can disable it using
+     *            <a>DisableMetricsCollection</a>.
+     *            </p>
+     *            </important>
      */
     public void setLaunchConfigurationName(String launchConfigurationName) {
         this.launchConfigurationName = launchConfigurationName;
@@ -377,9 +462,19 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The name of the launch configuration. If you specify this parameter, you
-     * can't specify a launch template or a mixed instances policy.
+     * The name of the launch configuration. If you specify
+     * <code>LaunchConfigurationName</code> in your update request, you can't
+     * specify <code>LaunchTemplate</code> or <code>MixedInstancesPolicy</code>.
      * </p>
+     * <important>
+     * <p>
+     * To update an Auto Scaling group with a launch configuration with
+     * <code>InstanceMonitoring</code> set to <code>false</code>, you must first
+     * disable the collection of group metrics. Otherwise, you get an error. If
+     * you have previously enabled the collection of group metrics, you can
+     * disable it using <a>DisableMetricsCollection</a>.
+     * </p>
+     * </important>
      * <p>
      * Returns a reference to this object so that method calls can be chained
      * together.
@@ -390,10 +485,21 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @param launchConfigurationName <p>
-     *            The name of the launch configuration. If you specify this
-     *            parameter, you can't specify a launch template or a mixed
-     *            instances policy.
+     *            The name of the launch configuration. If you specify
+     *            <code>LaunchConfigurationName</code> in your update request,
+     *            you can't specify <code>LaunchTemplate</code> or
+     *            <code>MixedInstancesPolicy</code>.
      *            </p>
+     *            <important>
+     *            <p>
+     *            To update an Auto Scaling group with a launch configuration
+     *            with <code>InstanceMonitoring</code> set to <code>false</code>
+     *            , you must first disable the collection of group metrics.
+     *            Otherwise, you get an error. If you have previously enabled
+     *            the collection of group metrics, you can disable it using
+     *            <a>DisableMetricsCollection</a>.
+     *            </p>
+     *            </important>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
      */
@@ -405,14 +511,28 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The launch template and version to use to specify the updates. If you
-     * specify this parameter, you can't specify a launch configuration or a
-     * mixed instances policy.
+     * specify <code>LaunchTemplate</code> in your update request, you can't
+     * specify <code>LaunchConfigurationName</code> or
+     * <code>MixedInstancesPolicy</code>.
+     * </p>
+     * <p>
+     * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     * >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i>.
      * </p>
      *
      * @return <p>
      *         The launch template and version to use to specify the updates. If
-     *         you specify this parameter, you can't specify a launch
-     *         configuration or a mixed instances policy.
+     *         you specify <code>LaunchTemplate</code> in your update request,
+     *         you can't specify <code>LaunchConfigurationName</code> or
+     *         <code>MixedInstancesPolicy</code>.
+     *         </p>
+     *         <p>
+     *         For more information, see <a href=
+     *         "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     *         >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto
+     *         Scaling API Reference</i>.
      *         </p>
      */
     public LaunchTemplateSpecification getLaunchTemplate() {
@@ -422,14 +542,29 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The launch template and version to use to specify the updates. If you
-     * specify this parameter, you can't specify a launch configuration or a
-     * mixed instances policy.
+     * specify <code>LaunchTemplate</code> in your update request, you can't
+     * specify <code>LaunchConfigurationName</code> or
+     * <code>MixedInstancesPolicy</code>.
+     * </p>
+     * <p>
+     * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     * >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i>.
      * </p>
      *
      * @param launchTemplate <p>
      *            The launch template and version to use to specify the updates.
-     *            If you specify this parameter, you can't specify a launch
-     *            configuration or a mixed instances policy.
+     *            If you specify <code>LaunchTemplate</code> in your update
+     *            request, you can't specify
+     *            <code>LaunchConfigurationName</code> or
+     *            <code>MixedInstancesPolicy</code>.
+     *            </p>
+     *            <p>
+     *            For more information, see <a href=
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     *            >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto
+     *            Scaling API Reference</i>.
      *            </p>
      */
     public void setLaunchTemplate(LaunchTemplateSpecification launchTemplate) {
@@ -439,8 +574,15 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
     /**
      * <p>
      * The launch template and version to use to specify the updates. If you
-     * specify this parameter, you can't specify a launch configuration or a
-     * mixed instances policy.
+     * specify <code>LaunchTemplate</code> in your update request, you can't
+     * specify <code>LaunchConfigurationName</code> or
+     * <code>MixedInstancesPolicy</code>.
+     * </p>
+     * <p>
+     * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     * >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i>.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -448,8 +590,16 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      *
      * @param launchTemplate <p>
      *            The launch template and version to use to specify the updates.
-     *            If you specify this parameter, you can't specify a launch
-     *            configuration or a mixed instances policy.
+     *            If you specify <code>LaunchTemplate</code> in your update
+     *            request, you can't specify
+     *            <code>LaunchConfigurationName</code> or
+     *            <code>MixedInstancesPolicy</code>.
+     *            </p>
+     *            <p>
+     *            For more information, see <a href=
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchTemplateSpecification.html"
+     *            >LaunchTemplateSpecification</a> in the <i>Amazon EC2 Auto
+     *            Scaling API Reference</i>.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -462,24 +612,36 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The mixed instances policy to use to specify the updates. If you specify
-     * this parameter, you can't specify a launch configuration or a launch
-     * template.
+     * An embedded object that specifies a mixed instances policy.
+     * </p>
+     * <p>
+     * In your call to <code>UpdateAutoScalingGroup</code>, you can make changes
+     * to the policy that is specified. All optional parameters are left
+     * unchanged if not specified.
      * </p>
      * <p>
      * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     * >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i> and <a href=
      * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      * >Auto Scaling Groups with Multiple Instance Types and Purchase
      * Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      *
      * @return <p>
-     *         The mixed instances policy to use to specify the updates. If you
-     *         specify this parameter, you can't specify a launch configuration
-     *         or a launch template.
+     *         An embedded object that specifies a mixed instances policy.
+     *         </p>
+     *         <p>
+     *         In your call to <code>UpdateAutoScalingGroup</code>, you can make
+     *         changes to the policy that is specified. All optional parameters
+     *         are left unchanged if not specified.
      *         </p>
      *         <p>
      *         For more information, see <a href=
+     *         "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     *         >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling API
+     *         Reference</i> and <a href=
      *         "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      *         >Auto Scaling Groups with Multiple Instance Types and Purchase
      *         Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
@@ -491,24 +653,36 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The mixed instances policy to use to specify the updates. If you specify
-     * this parameter, you can't specify a launch configuration or a launch
-     * template.
+     * An embedded object that specifies a mixed instances policy.
+     * </p>
+     * <p>
+     * In your call to <code>UpdateAutoScalingGroup</code>, you can make changes
+     * to the policy that is specified. All optional parameters are left
+     * unchanged if not specified.
      * </p>
      * <p>
      * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     * >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i> and <a href=
      * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      * >Auto Scaling Groups with Multiple Instance Types and Purchase
      * Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      *
      * @param mixedInstancesPolicy <p>
-     *            The mixed instances policy to use to specify the updates. If
-     *            you specify this parameter, you can't specify a launch
-     *            configuration or a launch template.
+     *            An embedded object that specifies a mixed instances policy.
+     *            </p>
+     *            <p>
+     *            In your call to <code>UpdateAutoScalingGroup</code>, you can
+     *            make changes to the policy that is specified. All optional
+     *            parameters are left unchanged if not specified.
      *            </p>
      *            <p>
      *            For more information, see <a href=
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     *            >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling
+     *            API Reference</i> and <a href=
      *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      *            >Auto Scaling Groups with Multiple Instance Types and Purchase
      *            Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
@@ -520,12 +694,18 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * The mixed instances policy to use to specify the updates. If you specify
-     * this parameter, you can't specify a launch configuration or a launch
-     * template.
+     * An embedded object that specifies a mixed instances policy.
+     * </p>
+     * <p>
+     * In your call to <code>UpdateAutoScalingGroup</code>, you can make changes
+     * to the policy that is specified. All optional parameters are left
+     * unchanged if not specified.
      * </p>
      * <p>
      * For more information, see <a href=
+     * "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     * >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling API
+     * Reference</i> and <a href=
      * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      * >Auto Scaling Groups with Multiple Instance Types and Purchase
      * Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
@@ -535,12 +715,18 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * together.
      *
      * @param mixedInstancesPolicy <p>
-     *            The mixed instances policy to use to specify the updates. If
-     *            you specify this parameter, you can't specify a launch
-     *            configuration or a launch template.
+     *            An embedded object that specifies a mixed instances policy.
+     *            </p>
+     *            <p>
+     *            In your call to <code>UpdateAutoScalingGroup</code>, you can
+     *            make changes to the policy that is specified. All optional
+     *            parameters are left unchanged if not specified.
      *            </p>
      *            <p>
      *            For more information, see <a href=
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_MixedInstancesPolicy.html"
+     *            >MixedInstancesPolicy</a> in the <i>Amazon EC2 Auto Scaling
+     *            API Reference</i> and <a href=
      *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-purchase-options.html"
      *            >Auto Scaling Groups with Multiple Instance Types and Purchase
      *            Options</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
@@ -708,21 +894,27 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <p>
      * The amount of time, in seconds, after a scaling activity completes before
      * another scaling activity can start. The default value is <code>300</code>
-     * .
+     * . This cooldown period is not used when a scaling-specific cooldown is
+     * specified.
      * </p>
      * <p>
-     * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
+     * Cooldown periods are not supported for target tracking scaling policies,
+     * step scaling policies, or scheduled scaling. For more information, see <a
+     * href
+     * ="https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      * >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      *
      * @return <p>
      *         The amount of time, in seconds, after a scaling activity
      *         completes before another scaling activity can start. The default
-     *         value is <code>300</code>.
+     *         value is <code>300</code>. This cooldown period is not used when
+     *         a scaling-specific cooldown is specified.
      *         </p>
      *         <p>
-     *         For more information, see <a href=
+     *         Cooldown periods are not supported for target tracking scaling
+     *         policies, step scaling policies, or scheduled scaling. For more
+     *         information, see <a href=
      *         "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      *         >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User
      *         Guide</i>.
@@ -736,21 +928,27 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <p>
      * The amount of time, in seconds, after a scaling activity completes before
      * another scaling activity can start. The default value is <code>300</code>
-     * .
+     * . This cooldown period is not used when a scaling-specific cooldown is
+     * specified.
      * </p>
      * <p>
-     * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
+     * Cooldown periods are not supported for target tracking scaling policies,
+     * step scaling policies, or scheduled scaling. For more information, see <a
+     * href
+     * ="https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      * >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      *
      * @param defaultCooldown <p>
      *            The amount of time, in seconds, after a scaling activity
      *            completes before another scaling activity can start. The
-     *            default value is <code>300</code>.
+     *            default value is <code>300</code>. This cooldown period is not
+     *            used when a scaling-specific cooldown is specified.
      *            </p>
      *            <p>
-     *            For more information, see <a href=
+     *            Cooldown periods are not supported for target tracking scaling
+     *            policies, step scaling policies, or scheduled scaling. For
+     *            more information, see <a href=
      *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      *            >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User
      *            Guide</i>.
@@ -764,11 +962,14 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <p>
      * The amount of time, in seconds, after a scaling activity completes before
      * another scaling activity can start. The default value is <code>300</code>
-     * .
+     * . This cooldown period is not used when a scaling-specific cooldown is
+     * specified.
      * </p>
      * <p>
-     * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
+     * Cooldown periods are not supported for target tracking scaling policies,
+     * step scaling policies, or scheduled scaling. For more information, see <a
+     * href
+     * ="https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      * >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
      * </p>
      * <p>
@@ -778,10 +979,13 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * @param defaultCooldown <p>
      *            The amount of time, in seconds, after a scaling activity
      *            completes before another scaling activity can start. The
-     *            default value is <code>300</code>.
+     *            default value is <code>300</code>. This cooldown period is not
+     *            used when a scaling-specific cooldown is specified.
      *            </p>
      *            <p>
-     *            For more information, see <a href=
+     *            Cooldown periods are not supported for target tracking scaling
+     *            policies, step scaling policies, or scheduled scaling. For
+     *            more information, see <a href=
      *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/Cooldown.html"
      *            >Scaling Cooldowns</a> in the <i>Amazon EC2 Auto Scaling User
      *            Guide</i>.
@@ -958,9 +1162,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * </p>
      * <p>
      * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     * >Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto
-     * Scaling User Guide</i>.
+     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     * >Health Check Grace Period</a> in the <i>Amazon EC2 Auto Scaling User
+     * Guide</i>.
      * </p>
      * <p>
      * Conditional: This parameter is required if you are adding an
@@ -974,9 +1178,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      *         </p>
      *         <p>
      *         For more information, see <a href=
-     *         "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     *         >Health Checks for Auto Scaling Instances</a> in the <i>Amazon
-     *         EC2 Auto Scaling User Guide</i>.
+     *         "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     *         >Health Check Grace Period</a> in the <i>Amazon EC2 Auto Scaling
+     *         User Guide</i>.
      *         </p>
      *         <p>
      *         Conditional: This parameter is required if you are adding an
@@ -995,9 +1199,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * </p>
      * <p>
      * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     * >Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto
-     * Scaling User Guide</i>.
+     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     * >Health Check Grace Period</a> in the <i>Amazon EC2 Auto Scaling User
+     * Guide</i>.
      * </p>
      * <p>
      * Conditional: This parameter is required if you are adding an
@@ -1012,9 +1216,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      *            </p>
      *            <p>
      *            For more information, see <a href=
-     *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     *            >Health Checks for Auto Scaling Instances</a> in the <i>Amazon
-     *            EC2 Auto Scaling User Guide</i>.
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     *            >Health Check Grace Period</a> in the <i>Amazon EC2 Auto
+     *            Scaling User Guide</i>.
      *            </p>
      *            <p>
      *            Conditional: This parameter is required if you are adding an
@@ -1033,9 +1237,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * </p>
      * <p>
      * For more information, see <a href=
-     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     * >Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto
-     * Scaling User Guide</i>.
+     * "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     * >Health Check Grace Period</a> in the <i>Amazon EC2 Auto Scaling User
+     * Guide</i>.
      * </p>
      * <p>
      * Conditional: This parameter is required if you are adding an
@@ -1053,9 +1257,9 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      *            </p>
      *            <p>
      *            For more information, see <a href=
-     *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html"
-     *            >Health Checks for Auto Scaling Instances</a> in the <i>Amazon
-     *            EC2 Auto Scaling User Guide</i>.
+     *            "https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html#health-check-grace-period"
+     *            >Health Check Grace Period</a> in the <i>Amazon EC2 Auto
+     *            Scaling User Guide</i>.
      *            </p>
      *            <p>
      *            Conditional: This parameter is required if you are adding an
@@ -1170,7 +1374,7 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * A comma-separated list of subnet IDs, if you are launching into a VPC.
+     * A comma-separated list of subnet IDs for virtual private cloud (VPC).
      * </p>
      * <p>
      * If you specify <code>VPCZoneIdentifier</code> with
@@ -1184,8 +1388,8 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @return <p>
-     *         A comma-separated list of subnet IDs, if you are launching into a
-     *         VPC.
+     *         A comma-separated list of subnet IDs for virtual private cloud
+     *         (VPC).
      *         </p>
      *         <p>
      *         If you specify <code>VPCZoneIdentifier</code> with
@@ -1199,7 +1403,7 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * A comma-separated list of subnet IDs, if you are launching into a VPC.
+     * A comma-separated list of subnet IDs for virtual private cloud (VPC).
      * </p>
      * <p>
      * If you specify <code>VPCZoneIdentifier</code> with
@@ -1213,8 +1417,8 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @param vPCZoneIdentifier <p>
-     *            A comma-separated list of subnet IDs, if you are launching
-     *            into a VPC.
+     *            A comma-separated list of subnet IDs for virtual private cloud
+     *            (VPC).
      *            </p>
      *            <p>
      *            If you specify <code>VPCZoneIdentifier</code> with
@@ -1228,7 +1432,7 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
 
     /**
      * <p>
-     * A comma-separated list of subnet IDs, if you are launching into a VPC.
+     * A comma-separated list of subnet IDs for virtual private cloud (VPC).
      * </p>
      * <p>
      * If you specify <code>VPCZoneIdentifier</code> with
@@ -1245,8 +1449,8 @@ public class UpdateAutoScalingGroupRequest extends AmazonWebServiceRequest imple
      * <br/>
      *
      * @param vPCZoneIdentifier <p>
-     *            A comma-separated list of subnet IDs, if you are launching
-     *            into a VPC.
+     *            A comma-separated list of subnet IDs for virtual private cloud
+     *            (VPC).
      *            </p>
      *            <p>
      *            If you specify <code>VPCZoneIdentifier</code> with

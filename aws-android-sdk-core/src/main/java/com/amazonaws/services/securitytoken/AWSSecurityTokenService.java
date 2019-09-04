@@ -31,18 +31,6 @@ import com.amazonaws.services.securitytoken.model.*;
  * "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html"
  * >Temporary Security Credentials</a>.
  * </p>
- * <note>
- * <p>
- * As an alternative to using the API, you can use one of the AWS SDKs, which
- * consist of libraries and sample code for various programming languages and
- * platforms (Java, Ruby, .NET, iOS, Android, etc.). The SDKs provide a
- * convenient way to create programmatic access to STS. For example, the SDKs
- * take care of cryptographically signing requests, managing errors, and
- * retrying requests automatically. For information about the AWS SDKs,
- * including how to download and install them, see the <a
- * href="http://aws.amazon.com/tools/">Tools for Amazon Web Services page</a>.
- * </p>
- * </note>
  * <p>
  * For information about setting up signatures and authorization through the
  * API, go to <a href=
@@ -92,14 +80,12 @@ import com.amazonaws.services.securitytoken.model.*;
  * </p>
  * <p>
  * After you activate a Region for use with AWS STS, you can direct AWS STS API
- * calls to that Region. AWS STS recommends that you use both the
- * <code>setRegion</code> and <code>setEndpoint</code> methods to make calls to
- * a Regional endpoint. You can use the <code>setRegion</code> method alone for
- * manually enabled Regions, such as Asia Pacific (Hong Kong). In this case, the
- * calls are directed to the STS Regional endpoint. However, if you use the
- * <code>setRegion</code> method alone for Regions enabled by default, the calls
- * are directed to the global endpoint of <code>https://sts.amazonaws.com</code>
- * .
+ * calls to that Region. AWS STS recommends that you provide both the Region and
+ * endpoint when you make calls to a Regional endpoint. You can provide the
+ * Region alone for manually enabled Regions, such as Asia Pacific (Hong Kong).
+ * In this case, the calls are directed to the STS Regional endpoint. However,
+ * if you provide the Region alone for Regions enabled by default, the calls are
+ * directed to the global endpoint of <code>https://sts.amazonaws.com</code>.
  * </p>
  * <p>
  * To view the list of AWS STS endpoints and whether they are active by default,
@@ -275,7 +261,7 @@ public interface AWSSecurityTokenService {
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -448,7 +434,7 @@ public interface AWSSecurityTokenService {
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -542,9 +528,69 @@ public interface AWSSecurityTokenService {
 
     /**
      * <p>
-     * Returns details about the IAM identity whose credentials are used to call
-     * the API.
+     * Returns the account identifier for the specified access key ID.
      * </p>
+     * <p>
+     * Access keys consist of two parts: an access key ID (for example,
+     * <code>AKIAIOSFODNN7EXAMPLE</code>) and a secret access key (for example,
+     * <code>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</code>). For more
+     * information about access keys, see <a href=
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html"
+     * >Managing Access Keys for IAM Users</a> in the <i>IAM User Guide</i>.
+     * </p>
+     * <p>
+     * When you pass an access key ID to this operation, it returns the ID of
+     * the AWS account to which the keys belong. Access key IDs beginning with
+     * <code>AKIA</code> are long-term credentials for an IAM user or the AWS
+     * account root user. Access key IDs beginning with <code>ASIA</code> are
+     * temporary credentials that are created using STS operations. If the
+     * account in the response belongs to you, you can sign in as the root user
+     * and review your root user access keys. Then, you can pull a <a href=
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html"
+     * >credentials report</a> to learn which IAM user owns the keys. To learn
+     * who requested the temporary credentials for an <code>ASIA</code> access
+     * key, view the STS events in your <a href=
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html"
+     * >CloudTrail logs</a>.
+     * </p>
+     * <p>
+     * This operation does not indicate the state of the access key. The key
+     * might be active, inactive, or deleted. Active keys might not have
+     * permissions to perform an operation. Providing a deleted access key might
+     * return an error that the key doesn't exist.
+     * </p>
+     * 
+     * @param getAccessKeyInfoRequest
+     * @return getAccessKeyInfoResult The response from the GetAccessKeyInfo
+     *         service method, as returned by AWS Security Token Service.
+     * @throws AmazonClientException If any internal errors are encountered
+     *             inside the client while attempting to make the request or
+     *             handle the response. For example if a network connection is
+     *             not available.
+     * @throws AmazonServiceException If an error response is returned by AWS
+     *             Security Token Service indicating either a problem with the
+     *             data in the request, or a server side issue.
+     */
+    GetAccessKeyInfoResult getAccessKeyInfo(GetAccessKeyInfoRequest getAccessKeyInfoRequest)
+            throws AmazonClientException, AmazonServiceException;
+
+    /**
+     * <p>
+     * Returns details about the IAM user or role whose credentials are used to
+     * call the operation.
+     * </p>
+     * <note>
+     * <p>
+     * No permissions are required to perform this operation. If an
+     * administrator adds a policy to your IAM user or role that explicitly
+     * denies access to the <code>sts:GetCallerIdentity</code> action, you can
+     * still perform this operation. Permissions are not required because the
+     * same information is returned when an IAM user or role is denied access.
+     * To view an example response, see <a href=
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_general.html#troubleshoot_general_access-denied-delete-mfa"
+     * >I Am Not Authorized to Perform: iam:DeleteVirtualMFADevice</a>.
+     * </p>
+     * </note>
      * 
      * @param getCallerIdentityRequest
      * @return getCallerIdentityResult The response from the GetCallerIdentity
@@ -648,7 +694,7 @@ public interface AWSSecurityTokenService {
      * You cannot use session policies to grant more permissions than those that
      * are defined in the permissions policy of the IAM user. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>. For information about
      * using <code>GetFederationToken</code> to create temporary security
      * credentials, see <a href=
@@ -855,9 +901,21 @@ public interface AWSSecurityTokenService {
 
     /**
      * <p>
-     * Returns details about the IAM identity whose credentials are used to call
-     * the API.
+     * Returns details about the IAM user or role whose credentials are used to
+     * call the operation.
      * </p>
+     * <note>
+     * <p>
+     * No permissions are required to perform this operation. If an
+     * administrator adds a policy to your IAM user or role that explicitly
+     * denies access to the <code>sts:GetCallerIdentity</code> action, you can
+     * still perform this operation. Permissions are not required because the
+     * same information is returned when an IAM user or role is denied access.
+     * To view an example response, see <a href=
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_general.html#troubleshoot_general_access-denied-delete-mfa"
+     * >I Am Not Authorized to Perform: iam:DeleteVirtualMFADevice</a>.
+     * </p>
+     * </note>
      * 
      * @return getCallerIdentityResult The response from the GetCallerIdentity
      *         service method, as returned by AWS Security Token Service.

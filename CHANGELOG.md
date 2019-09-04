@@ -1,8 +1,192 @@
 # Change Log - AWS SDK for Android
 
+## [Release 2.15.2](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.15.2)
+
+### Bug Fixes
+- **AWS Mobile Client**
+  - Fix issue where MobileClient would return invalid tokens after initialization when using Hosted UI.
+    See [issue #873](https://github.com/aws-amplify/aws-sdk-android/issues/873) and
+    [issue #888](https://github.com/aws-amplify/aws-sdk-android/issues/888)
+- **Amazon Cognito Identity Provider**
+  - Use internal username for computing secret hash that is passed in challenge response. See [Issue# 889](https://github.com/aws-amplify/aws-sdk-android/issues/889) for details
+
+### Misc. Updates
+
+- Model updates for the following services
+  - Amazon Connect
+  - Amazon Rekognition
+  - Amazon Transcribe
+
+## [Release 2.15.1](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.15.1)
+
+### Bug Fixes
+
+- **AWS Core Runtime**
+  - Fixed a bug where encrypted authentication data persisted by the SDK could not be recovered due to:
+      * The encryption key being removed
+      * The encryption key being replaced
+      * The encryption key not being recoverable by the OS
+
+    These conditions formerly resulted in an app crash. Now, the errors are logged (without logging sensitive data) and the decryption attempt returns `null`, as if the data simply isn't present in the persistent store.
+
+    Classes affected:
+    - `CognitoCachingCredentialsProvider`
+    - `CognitoUserPool`
+    - `CognitoAuth`
+    - `AWSMobileClient`
+
+    For more detail, see issues:
+    - [#937](https://github.com/aws-amplify/aws-sdk-android/issues/937)
+    - [#1108](https://github.com/aws-amplify/aws-sdk-android/issues/1108)
+    - [#1109](https://github.com/aws-amplify/aws-sdk-android/issues/1109)
+    - [#1115](https://github.com/aws-amplify/aws-sdk-android/issues/1115)
+
+- **Amazon S3**
+  - Fixed a bug where multi-part uploads via `TransferUtility` would fail to propagate tags to `Amazon S3` from the `UserMetadata` passed through the `ObjectMetadata`. See [Issue#541](https://github.com/aws-amplify/aws-sdk-android/issues/541).
+  - The following code should now attach a tag for both single-part and multi-part uploads:
+  
+	```java
+	ObjectMetadata metadata = new ObjectMetadata();
+	metadata.addUserMetadata(Headers.S3_TAGGING, "key=value");
+	TransferObserver observer = transferUtility.upload(
+		file.getName(),
+		file,
+		metadata
+	);
+	```
+
+## [Release 2.15.0](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.15.0)
+
+### Bug Fixes
+
+- **AWS Core Runtime**
+  - Update `LogFactory.getLog` to automatically truncate the log tag to be within 23 character limit imposed by Android for Nougat(7.0) releases and prior(API <= 23). See [issue #1103](https://github.com/aws-amplify/aws-sdk-android/issues/1103)
+- **Amazon Pinpoint**
+  - Removed the check for INTERNET and ACCESS_NETWORK_STATE permissions while initializing `PinpointManager`. These are [normal permissions](https://developer.android.com/guide/topics/permissions/overview#normal_permissions) and therefore are not required to be checked before performing corresponding app-op. This changes Pinpoint SDK behavior to match that of our other SDKs where an `UnknownHostException` or a corresponding RuntimeException would be thrown if connectivity is not present when network calls are made by the SDK. This fixes [Issue#1092](https://github.com/aws-amplify/aws-sdk-android/issues/1092).
+
+### Misc. Updates
+
+- **Breaking Changes**
+  - Removed deprecated SDKGlobalConfiguration options:
+    - `ENABLE_S3_SIGV4_SYSTEM_PROPERTY`
+    - `ENFORCE_S3_SIGV4_SYSTEM_PROPERTY`
+- Remove unused `mfaOption` property from `CognitoUserAttributes` class
+- Model updates for the following services
+  - Amazon AutoScaling
+  - AWS IoT
+  - Amazon Lex
+  - Amazon Rekognition
+
+## [Release 2.14.2](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.14.2)
+
+### New Features
+
+- **AWS IoT**
+  - Added an overloaded version of `subscribeToTopic()` method,
+    `public void subscribeToTopic(final String topic, final AWSIotMqttQos qos, final AWSIotMqttSubscriptionStatusCallback subscriptionStatusCallback, final AWSIotMqttNewMessageCallback callback);`,
+    in `AWSIotMqttManager` which accepts subscription status callback to notify users of the status of subscription operation.
+    See [Issue#1005](https://github.com/aws-amplify/aws-sdk-android/issues/1005) for details.
+
+### Misc. Updates
+
+- Model updates for the following services
+  - Amazon Polly
+
+## [Release 2.14.1](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.14.1)
+
+### New Features
+
+- **AWS Core Runtime**
+  - Added support for `me-south-1` - Middle East (Bahrain) region.
+
+### Bug Fixes
+- **AWS Core Runtime**
+  - Fixed response unmarshalling when response is gzip encoded without a CRC32 checksum. Also fixes bug decoding Kinesis responses with GZIP encoding.
+- **Amazon Kinesis Video**
+  - Fixed a bug when CreateStreamRequest is initialized without setting Tags, auto-generated empty HashMap of Tags would cause ValidationException from Kinesis Video.
+  - Fixed incorrect timestamp unit for encoder input caused high bitrate issue for the stream.
+
+### Misc. Updates
+
+- Model updates for the following services
+  - Amazon Comprehend
+  - Amazon Security Token Service (STS)
+
+## [Release 2.14.0](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.14.0)
+
+### New Features
+
+* **Amazon Connect**
+  * Amazon Connect is a self-service, cloud-based contact center service that makes it easy for any business to deliver better customer service at lower cost. Amazon Connect is based on the same contact center technology used by Amazon customer service associates around the world to power millions of customer conversations. The self-service graphical interface in Amazon Connect makes it easy for non-technical users to design contact flows, manage agents, and track performance metrics – no specialized skills required. There are no up-front payments or long-term commitments and no infrastructure to manage with Amazon Connect; customers pay by the minute for Amazon Connect usage plus any associated telephony services.  See [Amazon Connect Documentation](https://aws.amazon.com/connect/) for more details.
+
+### Misc. Updates
+
+- Model updates for the following services
+  - Amazon Kinesis Video
+  - Amazon Rekognition
+    - **Breaking Change:** This SDK has been updated to the latest model after a long interval, and there have been several breaking changes in the
+      intervening time. Please review the [API documentation](https://aws-amplify.github.io/aws-sdk-android/docs/reference/index.html)
+      to see the latest API.
+
+## [Release 2.13.7](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.13.7)
+
+### New Features
+
+* **Amazon SageMaker**
+  * Amazon SageMaker provides every developer and data scientist with the ability to build, train, and deploy machine learning models quickly. Amazon SageMaker is a fully-managed service that covers the entire machine learning workflow to label and prepare your data, choose an algorithm, train the model, tune and optimize it for deployment, make predictions, and take action. Your models get to production faster with much less effort and lower cost. See [Amazon SageMaker Documentation](https://aws.amazon.com/sagemaker/) for more details.
+  
+* **Amazon Textract**
+  * Amazon Textract is a service that automatically extracts text and data from scanned documents. Amazon Textract goes beyond simple optical character recognition (OCR) to also identify the contents of fields in forms and information stored in tables. See [Amazon Textract Documentation](https://aws.amazon.com/textract/) for more details.
+
+### Bug Fixes
+
+* **Amazon S3**
+  * Fix a bug where the `TransferNetworkLossHandler` crashes while pausing the on-going transfers when network connectivity goes offline. See [issue #777](https://github.com/aws-amplify/aws-sdk-android/issues/777) for details.
+
+* **Amazon Pinpoint**
+  * Added limits to batch submit events. A maximum of 100 events per batch as specified by the service. See [issue #977](https://github.com/aws-amplify/aws-sdk-android/issues/977) for details.
+  
+### Misc. Updates
+
+* Model updates for the following services
+  * Amazon AutoScaling
+  * Amazon Cognito Identity Pools
+  * Amazon Cognito UserPools
+  * Amazon Comprehend
+  * AWS IoT
+  * Amazon Key Management Service (KMS)
+  * Amazon Kinesis Firehose
+  * Amazon Kinesis Video
+  * AWS Lambda
+  * Amazon Lex
+  * Amazon Machine Learning
+  * Amazon Polly
+  * Amazon Security Token Service (STS)
+  * Amazon Simple Email Service (SES)
+  * Amazon Transcribe
+  * Amazon Translate
+
+## [Release 2.13.6](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.13.6)
+
+### New Features
+
+* **AWS Core Runtime**
+  * Add `AWSConfiguration(JSONObject)` constructor to construct a `AWSConfiguration` object from the configuration passed via a `JSONObject`.
+
+### Misc. Updates
+
+* Model updates for the following services
+  * Amazon Transcribe
+
 ## [Release 2.13.5](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.13.5)
 
 ### Bug Fixes
+
+* **Amazon S3**
+  * Fix a bug where the `TransferListener` is not triggered when the preferred network type is not available. See [issue #958](https://github.com/aws-amplify/aws-sdk-android/issues/958) for details.
+  
+* **AWS Core Runtime**
+  * Fixed a bug where generating RSA keys for encryption of the credentials failed due to `setKeySize(int)` method not available in Android API level 18. See [issue #964](https://github.com/aws-amplify/aws-sdk-android/issues/964) for details.
 
 * **Amazon Kinesis Video Streams**
   * Removed trailing zeroes from encoder output that caused 0x3200000d errors when frames contained more than 3 trailing zeroes. See AnnexB sepcification.
@@ -1588,4 +1772,3 @@ All documentation is now centralized at https://aws-amplify.github.io/
 ### Bug Fixes
 - **Amazon S3**: Fixed an issue that occurs when required headers are not properly signed. This issue affects S3 in two regions: Frankfurt (eu-central-1) and China (cn-north-1). [#42](https://github.com/aws/aws-sdk-android/issues/42)
 - **AWS Core Runtime Library**: Fixed an issue in Maven distribution where an incorrect version string is set in "User-Agent".
-1

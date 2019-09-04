@@ -88,7 +88,7 @@ import com.amazonaws.AmazonWebServiceRequest;
  * account that owns the role. You cannot use session policies to grant more
  * permissions than those allowed by the identity-based policy of the role that
  * is being assumed. For more information, see <a href=
- * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+ * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
  * >Session Policies</a> in the <i>IAM User Guide</i>.
  * </p>
  * <p>
@@ -205,9 +205,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * This parameter is optional. You can provide up to 10 managed policy ARNs.
      * However, the plain text that you use for both inline and managed session
      * policies shouldn't exceed 2048 characters. For more information about
-     * ARNs, see <a href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     * Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS General
-     * Reference.
+     * ARNs, see <a href=
+     * "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     * >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
+     * General Reference.
      * </p>
      * <note>
      * <p>
@@ -226,7 +227,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * the account that owns the role. You cannot use session policies to grant
      * more permissions than those allowed by the identity-based policy of the
      * role that is being assumed. For more information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      */
@@ -246,7 +247,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -603,9 +604,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * This parameter is optional. You can provide up to 10 managed policy ARNs.
      * However, the plain text that you use for both inline and managed session
      * policies shouldn't exceed 2048 characters. For more information about
-     * ARNs, see <a href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     * Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS General
-     * Reference.
+     * ARNs, see <a href=
+     * "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     * >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
+     * General Reference.
      * </p>
      * <note>
      * <p>
@@ -624,7 +626,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * the account that owns the role. You cannot use session policies to grant
      * more permissions than those allowed by the identity-based policy of the
      * role that is being assumed. For more information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      *
@@ -637,10 +639,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *         This parameter is optional. You can provide up to 10 managed
      *         policy ARNs. However, the plain text that you use for both inline
      *         and managed session policies shouldn't exceed 2048 characters.
-     *         For more information about ARNs, see <a
-     *         href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     *         Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
-     *         General Reference.
+     *         For more information about ARNs, see <a href=
+     *         "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     *         >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in
+     *         the AWS General Reference.
      *         </p>
      *         <note>
      *         <p>
@@ -662,7 +664,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *         permissions than those allowed by the identity-based policy of
      *         the role that is being assumed. For more information, see <a
      *         href=
-     *         "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *         "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *         >Session Policies</a> in the <i>IAM User Guide</i>.
      *         </p>
      */
@@ -680,9 +682,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * This parameter is optional. You can provide up to 10 managed policy ARNs.
      * However, the plain text that you use for both inline and managed session
      * policies shouldn't exceed 2048 characters. For more information about
-     * ARNs, see <a href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     * Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS General
-     * Reference.
+     * ARNs, see <a href=
+     * "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     * >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
+     * General Reference.
      * </p>
      * <note>
      * <p>
@@ -701,7 +704,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * the account that owns the role. You cannot use session policies to grant
      * more permissions than those allowed by the identity-based policy of the
      * role that is being assumed. For more information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      *
@@ -714,10 +717,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            This parameter is optional. You can provide up to 10 managed
      *            policy ARNs. However, the plain text that you use for both
      *            inline and managed session policies shouldn't exceed 2048
-     *            characters. For more information about ARNs, see <a
-     *            href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     *            Resource Names (ARNs) and AWS Service Namespaces</a> in the
-     *            AWS General Reference.
+     *            characters. For more information about ARNs, see <a href=
+     *            "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     *            >Amazon Resource Names (ARNs) and AWS Service Namespaces</a>
+     *            in the AWS General Reference.
      *            </p>
      *            <note>
      *            <p>
@@ -739,7 +742,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            more permissions than those allowed by the identity-based
      *            policy of the role that is being assumed. For more
      *            information, see <a href=
-     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *            >Session Policies</a> in the <i>IAM User Guide</i>.
      *            </p>
      */
@@ -762,9 +765,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * This parameter is optional. You can provide up to 10 managed policy ARNs.
      * However, the plain text that you use for both inline and managed session
      * policies shouldn't exceed 2048 characters. For more information about
-     * ARNs, see <a href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     * Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS General
-     * Reference.
+     * ARNs, see <a href=
+     * "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     * >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
+     * General Reference.
      * </p>
      * <note>
      * <p>
@@ -783,7 +787,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * the account that owns the role. You cannot use session policies to grant
      * more permissions than those allowed by the identity-based policy of the
      * role that is being assumed. For more information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -799,10 +803,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            This parameter is optional. You can provide up to 10 managed
      *            policy ARNs. However, the plain text that you use for both
      *            inline and managed session policies shouldn't exceed 2048
-     *            characters. For more information about ARNs, see <a
-     *            href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     *            Resource Names (ARNs) and AWS Service Namespaces</a> in the
-     *            AWS General Reference.
+     *            characters. For more information about ARNs, see <a href=
+     *            "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     *            >Amazon Resource Names (ARNs) and AWS Service Namespaces</a>
+     *            in the AWS General Reference.
      *            </p>
      *            <note>
      *            <p>
@@ -824,7 +828,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            more permissions than those allowed by the identity-based
      *            policy of the role that is being assumed. For more
      *            information, see <a href=
-     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *            >Session Policies</a> in the <i>IAM User Guide</i>.
      *            </p>
      * @return A reference to this updated object so that method calls can be
@@ -850,9 +854,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * This parameter is optional. You can provide up to 10 managed policy ARNs.
      * However, the plain text that you use for both inline and managed session
      * policies shouldn't exceed 2048 characters. For more information about
-     * ARNs, see <a href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     * Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS General
-     * Reference.
+     * ARNs, see <a href=
+     * "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     * >Amazon Resource Names (ARNs) and AWS Service Namespaces</a> in the AWS
+     * General Reference.
      * </p>
      * <note>
      * <p>
@@ -871,7 +876,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * the account that owns the role. You cannot use session policies to grant
      * more permissions than those allowed by the identity-based policy of the
      * role that is being assumed. For more information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -887,10 +892,10 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            This parameter is optional. You can provide up to 10 managed
      *            policy ARNs. However, the plain text that you use for both
      *            inline and managed session policies shouldn't exceed 2048
-     *            characters. For more information about ARNs, see <a
-     *            href="general/latest/gr/aws-arns-and-namespaces.html">Amazon
-     *            Resource Names (ARNs) and AWS Service Namespaces</a> in the
-     *            AWS General Reference.
+     *            characters. For more information about ARNs, see <a href=
+     *            "https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+     *            >Amazon Resource Names (ARNs) and AWS Service Namespaces</a>
+     *            in the AWS General Reference.
      *            </p>
      *            <note>
      *            <p>
@@ -912,7 +917,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            more permissions than those allowed by the identity-based
      *            policy of the role that is being assumed. For more
      *            information, see <a href=
-     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *            >Session Policies</a> in the <i>IAM User Guide</i>.
      *            </p>
      * @return A reference to this updated object so that method calls can be
@@ -937,7 +942,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -975,7 +980,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *         to grant more permissions than those allowed by the
      *         identity-based policy of the role that is being assumed. For more
      *         information, see <a href=
-     *         "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *         "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *         >Session Policies</a> in the <i>IAM User Guide</i>.
      *         </p>
      *         <p>
@@ -1015,7 +1020,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -1053,7 +1058,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            session policies to grant more permissions than those allowed
      *            by the identity-based policy of the role that is being
      *            assumed. For more information, see <a href=
-     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *            >Session Policies</a> in the <i>IAM User Guide</i>.
      *            </p>
      *            <p>
@@ -1093,7 +1098,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      * cannot use session policies to grant more permissions than those allowed
      * by the identity-based policy of the role that is being assumed. For more
      * information, see <a href=
-     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     * "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      * >Session Policies</a> in the <i>IAM User Guide</i>.
      * </p>
      * <p>
@@ -1134,7 +1139,7 @@ public class AssumeRoleRequest extends AmazonWebServiceRequest implements Serial
      *            session policies to grant more permissions than those allowed
      *            by the identity-based policy of the role that is being
      *            assumed. For more information, see <a href=
-     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/IAM/latest/UserGuide/access_policies.html#policies_session"
+     *            "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session"
      *            >Session Policies</a> in the <i>IAM User Guide</i>.
      *            </p>
      *            <p>

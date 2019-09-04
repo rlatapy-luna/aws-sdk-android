@@ -103,16 +103,27 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * Constructs a new client to invoke service methods on AmazonPolly using
      * the specified AWS account credentials.
      * <p>
-     * If AWS session credentials are passed in, then those credentials will be
-     * used to authenticate requests. Otherwise, if AWS long-term credentials
-     * are passed in, then session management will be handled automatically by
-     * the SDK. Callers are encouraged to use long-term credentials and let the
-     * SDK handle starting and renewing sessions.
-     * <p>
-     * Automatically managed sessions will be shared among all clients that use
-     * the same credentials and service endpoint. To opt out of this behavior,
-     * explicitly provide an instance of {@link AWSCredentialsProvider} that
-     * returns {@link AWSSessionCredentials}.
+     * The client requests are authenticated using the {@link AWSCredentials}
+     * provided in this constructor. Static AWSCredentials can be passed for
+     * quick testing. However, it is strongly recommended to use Amazon Cognito
+     * vended temporary credentials for use in production. This can be achieved
+     * by using {@link AWSMobileClient}. Please see
+     * https://aws-amplify.github.io/docs/android/authentication for
+     * instructions on how to enable {@link AWSMobileClient}.
+     *
+     * <pre>
+     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+     *     &#064;Override
+     *     public void onResult(final UserStateDetails details) {
+     *         AmazonPollyClient client = new AmazonPollyClient(AWSMobileClient.getInstance());
+     *     }
+     * 
+     *     &#064;Override
+     *     public void onError(final Exception e) {
+     *         e.printStackTrace();
+     *     }
+     * });
+     * </pre>
      * <p>
      * All service calls made using this new client object are blocking, and
      * will not return until the service call completes.
@@ -128,16 +139,27 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * Constructs a new client to invoke service methods on AmazonPolly using
      * the specified AWS account credentials and client configuration options.
      * <p>
-     * If AWS session credentials are passed in, then those credentials will be
-     * used to authenticate requests. Otherwise, if AWS long-term credentials
-     * are passed in, then session management will be handled automatically by
-     * the SDK. Callers are encouraged to use long-term credentials and let the
-     * SDK handle starting and renewing sessions.
-     * <p>
-     * Automatically managed sessions will be shared among all clients that use
-     * the same credentials and service endpoint. To opt out of this behavior,
-     * explicitly provide an instance of {@link AWSCredentialsProvider} that
-     * returns {@link AWSSessionCredentials}.
+     * The client requests are authenticated using the {@link AWSCredentials}
+     * provided in this constructor. Static AWSCredentials can be passed for
+     * quick testing. However, it is strongly recommended to use Amazon Cognito
+     * vended temporary credentials for use in production. This can be achieved
+     * by using {@link AWSMobileClient}. Please see
+     * https://aws-amplify.github.io/docs/android/authentication for
+     * instructions on how to enable {@link AWSMobileClient}.
+     *
+     * <pre>
+     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+     *     &#064;Override
+     *     public void onResult(final UserStateDetails details) {
+     *         AmazonPollyClient client = new AmazonPollyClient(AWSMobileClient.getInstance());
+     *     }
+     * 
+     *     &#064;Override
+     *     public void onError(final Exception e) {
+     *         e.printStackTrace();
+     *     }
+     * });
+     * </pre>
      * <p>
      * All service calls made using this new client object are blocking, and
      * will not return until the service call completes.
@@ -156,16 +178,27 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * Constructs a new client to invoke service methods on AmazonPolly using
      * the specified AWS account credentials provider.
      * <p>
-     * If AWS session credentials are passed in, then those credentials will be
-     * used to authenticate requests. Otherwise, if AWS long-term credentials
-     * are passed in, then session management will be handled automatically by
-     * the SDK. Callers are encouraged to use long-term credentials and let the
-     * SDK handle starting and renewing sessions.
-     * <p>
-     * Automatically managed sessions will be shared among all clients that use
-     * the same credentials and service endpoint. To opt out of this behavior,
-     * explicitly provide an instance of {@link AWSCredentialsProvider} that
-     * returns {@link AWSSessionCredentials}.
+     * The client requests are authenticated using the {@link AWSCredentials}
+     * provided by the {@link AWSCredentialsProvider}. Static AWSCredentials can
+     * be passed for quick testing. However, it is strongly recommended to use
+     * Amazon Cognito vended temporary credentials for use in production. This
+     * can be achieved by using {@link AWSMobileClient}. Please see
+     * https://aws-amplify.github.io/docs/android/authentication for
+     * instructions on how to enable {@link AWSMobileClient}.
+     *
+     * <pre>
+     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+     *     &#064;Override
+     *     public void onResult(final UserStateDetails details) {
+     *         AmazonPollyClient client = new AmazonPollyClient(AWSMobileClient.getInstance());
+     *     }
+     * 
+     *     &#064;Override
+     *     public void onError(final Exception e) {
+     *         e.printStackTrace();
+     *     }
+     * });
+     * </pre>
      * <p>
      * All service calls made using this new client object are blocking, and
      * will not return until the service call completes.
@@ -183,16 +216,27 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * the specified AWS account credentials provider and client configuration
      * options.
      * <p>
-     * If AWS session credentials are passed in, then those credentials will be
-     * used to authenticate requests. Otherwise, if AWS long-term credentials
-     * are passed in, then session management will be handled automatically by
-     * the SDK. Callers are encouraged to use long-term credentials and let the
-     * SDK handle starting and renewing sessions.
-     * <p>
-     * Automatically managed sessions will be shared among all clients that use
-     * the same credentials and service endpoint. To opt out of this behavior,
-     * explicitly provide an instance of {@link AWSCredentialsProvider} that
-     * returns {@link AWSSessionCredentials}.
+     * The client requests are authenticated using the {@link AWSCredentials}
+     * provided by the {@link AWSCredentialsProvider}. Static AWSCredentials can
+     * be passed for quick testing. However, it is strongly recommended to use
+     * Amazon Cognito vended temporary credentials for use in production. This
+     * can be achieved by using {@link AWSMobileClient}. Please see
+     * https://aws-amplify.github.io/docs/android/authentication for
+     * instructions on how to enable {@link AWSMobileClient}.
+     *
+     * <pre>
+     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+     *     &#064;Override
+     *     public void onResult(final UserStateDetails details) {
+     *         AmazonPollyClient client = new AmazonPollyClient(AWSMobileClient.getInstance());
+     *     }
+     * 
+     *     &#064;Override
+     *     public void onError(final Exception e) {
+     *         e.printStackTrace();
+     *     }
+     * });
+     * </pre>
      * <p>
      * All service calls made using this new client object are blocking, and
      * will not return until the service call completes.
@@ -241,6 +285,28 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * the specified AWS account credentials provider, client configuration
      * options and request metric collector.
      * <p>
+     * The client requests are authenticated using the {@link AWSCredentials}
+     * provided by the {@link AWSCredentialsProvider}. Static AWSCredentials can
+     * be passed for quick testing. However, it is strongly recommended to use
+     * Amazon Cognito vended temporary credentials for use in production. This
+     * can be achieved by using {@link AWSMobileClient}. Please see
+     * https://aws-amplify.github.io/docs/android/authentication for
+     * instructions on how to enable {@link AWSMobileClient}.
+     *
+     * <pre>
+     * AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback&lt;UserStateDetails&gt;() {
+     *     &#064;Override
+     *     public void onResult(final UserStateDetails details) {
+     *         AmazonPollyClient client = new AmazonPollyClient(AWSMobileClient.getInstance());
+     *     }
+     * 
+     *     &#064;Override
+     *     public void onError(final Exception e) {
+     *         e.printStackTrace();
+     *     }
+     * });
+     * </pre>
+     * <p>
      * All service calls made using this new client object are blocking, and
      * will not return until the service call completes.
      *
@@ -263,6 +329,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
 
     private void init() {
         jsonErrorUnmarshallers = new ArrayList<JsonErrorUnmarshaller>();
+        jsonErrorUnmarshallers.add(new EngineNotSupportedExceptionUnmarshaller());
         jsonErrorUnmarshallers.add(new InvalidLexiconExceptionUnmarshaller());
         jsonErrorUnmarshallers.add(new InvalidNextTokenExceptionUnmarshaller());
         jsonErrorUnmarshallers.add(new InvalidS3BucketExceptionUnmarshaller());
@@ -311,7 +378,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * </p>
      * <p>
      * For more information, see <a href=
-     * "http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
+     * "https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
      * >Managing Lexicons</a>.
      * </p>
      * 
@@ -431,7 +498,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * <p>
      * Returns the content of the specified pronunciation lexicon stored in an
      * AWS Region. For more information, see <a href=
-     * "http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
+     * "https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
      * >Managing Lexicons</a>.
      * </p>
      * 
@@ -535,7 +602,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * <p>
      * Returns a list of pronunciation lexicons stored in an AWS Region. For
      * more information, see <a href=
-     * "http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
+     * "https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
      * >Managing Lexicons</a>.
      * </p>
      * 
@@ -643,7 +710,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * </p>
      * <p>
      * For more information, see <a href=
-     * "http://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
+     * "https://docs.aws.amazon.com/polly/latest/dg/managing-lexicons.html"
      * >Managing Lexicons</a>.
      * </p>
      * 
@@ -716,6 +783,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * @throws InvalidSampleRateException
      * @throws InvalidSnsTopicArnException
      * @throws InvalidSsmlException
+     * @throws EngineNotSupportedException
      * @throws LexiconNotFoundException
      * @throws ServiceFailureException
      * @throws MarksNotSupportedForFormatException
@@ -767,7 +835,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * available with all the voices (for example, Cyrillic might not be read at
      * all by English voices) unless phoneme mapping is used. For more
      * information, see <a href=
-     * "http://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html"
+     * "https://docs.aws.amazon.com/polly/latest/dg/how-text-to-speech-works.html"
      * >How it Works</a>.
      * </p>
      * 
@@ -782,6 +850,7 @@ public class AmazonPollyClient extends AmazonWebServiceClient implements AmazonP
      * @throws MarksNotSupportedForFormatException
      * @throws SsmlMarksNotSupportedForTextTypeException
      * @throws LanguageNotSupportedException
+     * @throws EngineNotSupportedException
      * @throws AmazonClientException If any internal errors are encountered
      *             inside the client while attempting to make the request or
      *             handle the response. For example if a network connection is

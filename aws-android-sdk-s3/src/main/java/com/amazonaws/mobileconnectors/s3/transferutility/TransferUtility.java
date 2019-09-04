@@ -23,6 +23,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import com.amazonaws.services.s3.S3ClientOptions;
+import com.amazonaws.services.s3.internal.Constants;
 import org.json.JSONObject;
 
 import com.amazonaws.AmazonWebServiceRequest;
@@ -264,6 +266,23 @@ public class TransferUtility {
                     this.s3.setRegion(Region.getRegion(tuConfig.getString("Region")));
                     this.defaultBucket = tuConfig.getString("Bucket");
 
+                    // Checks if awsconfiguration.json has local testing flag to dangerously connect to HTTP endpoint.
+                    // Defaults to false unless specified.
+                    final boolean canConnectToHTTPEndpoint = tuConfig.has(Constants.LOCAL_TESTING_FLAG_NAME) ?
+                            tuConfig.getBoolean(Constants.LOCAL_TESTING_FLAG_NAME) : false;
+
+                    // Mutates AmazonS3Client object to have local endpoint
+                    if (canConnectToHTTPEndpoint) {
+                        this.s3.setEndpoint(Constants.LOCAL_TESTING_ENDPOINT);
+                        this.s3.setS3ClientOptions(S3ClientOptions.builder()
+                                // Prevents reformatting host address to accommodate AWS service hostname pattern
+                                .setPathStyleAccess(true)
+                                // Skips data integrity check after each transfer because correct
+                                // hashing algorithm isn't yet implemented in local storage server
+                                .skipContentMd5Check(true)
+                                .build());
+                    }
+
                     TransferUtility.setUserAgentFromConfig(this.awsConfig.getUserAgent());
                 } catch (Exception e) {
                     throw new IllegalArgumentException("Failed to read S3TransferUtility "
@@ -389,8 +408,11 @@ public class TransferUtility {
             file.delete();
         }
 
+        // Creating the observer before the job is submitted because the listener needs to be registered
+        // with TransferStatusUpdater when the job is being submitted.
+        TransferObserver transferObserver = new TransferObserver(recordId, dbUtil, bucket, key, file, listener);
         submitTransferJob(TRANSFER_ADD, recordId);
-        return new TransferObserver(recordId, dbUtil, bucket, key, file, listener);
+        return transferObserver;
     }
 
     /**
@@ -551,8 +573,11 @@ public class TransferUtility {
             recordId = Integer.parseInt(uri.getLastPathSegment());
         }
 
+        // Creating the observer before the job is submitted because the listener needs to be registered
+        // with TransferStatusUpdater when the job is being submitted.
+        TransferObserver transferObserver = new TransferObserver(recordId, dbUtil, bucket, key, file, listener);
         submitTransferJob(TRANSFER_ADD, recordId);
-        return new TransferObserver(recordId, dbUtil, bucket, key, file, listener);
+        return transferObserver;
     }
 
     /**

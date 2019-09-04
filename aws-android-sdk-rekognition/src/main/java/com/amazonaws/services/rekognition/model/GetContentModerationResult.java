@@ -20,7 +20,7 @@ import java.io.Serializable;
 public class GetContentModerationResult implements Serializable {
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -47,7 +47,7 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The detected moderation labels and the time(s) they were detected.
+     * The detected unsafe content labels and the time(s) they were detected.
      * </p>
      */
     private java.util.List<ContentModerationDetection> moderationLabels;
@@ -56,7 +56,7 @@ public class GetContentModerationResult implements Serializable {
      * <p>
      * If the response is truncated, Amazon Rekognition Video returns this token
      * that you can use in the subsequent request to retrieve the next set of
-     * moderation labels.
+     * unsafe content labels.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -65,33 +65,23 @@ public class GetContentModerationResult implements Serializable {
     private String nextToken;
 
     /**
-     * The new value for the billableDurationSeconds property for this object.
      * <p>
-     * <b>Constraints:</b><br/>
-     * <b>Range: </b>0 - <br/>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
      */
-    private Integer billableDurationSeconds;
-
-    /**
-     * The new value for the errorCode property for this object.
-     */
-    private String errorCode;
-
-    /**
-     * The new value for the warnings property for this object.
-     */
-    private java.util.List<Warning> warnings;
+    private String moderationModelVersion;
 
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Allowed Values: </b>IN_PROGRESS, SUCCEEDED, FAILED
      *
      * @return <p>
-     *         The current status of the content moderation job.
+     *         The current status of the unsafe content analysis job.
      *         </p>
      * @see VideoJobStatus
      */
@@ -101,14 +91,14 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Allowed Values: </b>IN_PROGRESS, SUCCEEDED, FAILED
      *
      * @param jobStatus <p>
-     *            The current status of the content moderation job.
+     *            The current status of the unsafe content analysis job.
      *            </p>
      * @see VideoJobStatus
      */
@@ -118,7 +108,7 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -128,7 +118,7 @@ public class GetContentModerationResult implements Serializable {
      * <b>Allowed Values: </b>IN_PROGRESS, SUCCEEDED, FAILED
      *
      * @param jobStatus <p>
-     *            The current status of the content moderation job.
+     *            The current status of the unsafe content analysis job.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -141,14 +131,14 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
      * <b>Allowed Values: </b>IN_PROGRESS, SUCCEEDED, FAILED
      *
      * @param jobStatus <p>
-     *            The current status of the content moderation job.
+     *            The current status of the unsafe content analysis job.
      *            </p>
      * @see VideoJobStatus
      */
@@ -158,7 +148,7 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The current status of the content moderation job.
+     * The current status of the unsafe content analysis job.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -168,7 +158,7 @@ public class GetContentModerationResult implements Serializable {
      * <b>Allowed Values: </b>IN_PROGRESS, SUCCEEDED, FAILED
      *
      * @param jobStatus <p>
-     *            The current status of the content moderation job.
+     *            The current status of the unsafe content analysis job.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -289,11 +279,11 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The detected moderation labels and the time(s) they were detected.
+     * The detected unsafe content labels and the time(s) they were detected.
      * </p>
      *
      * @return <p>
-     *         The detected moderation labels and the time(s) they were
+     *         The detected unsafe content labels and the time(s) they were
      *         detected.
      *         </p>
      */
@@ -303,11 +293,11 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The detected moderation labels and the time(s) they were detected.
+     * The detected unsafe content labels and the time(s) they were detected.
      * </p>
      *
      * @param moderationLabels <p>
-     *            The detected moderation labels and the time(s) they were
+     *            The detected unsafe content labels and the time(s) they were
      *            detected.
      *            </p>
      */
@@ -324,14 +314,14 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The detected moderation labels and the time(s) they were detected.
+     * The detected unsafe content labels and the time(s) they were detected.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
      * together.
      *
      * @param moderationLabels <p>
-     *            The detected moderation labels and the time(s) they were
+     *            The detected unsafe content labels and the time(s) they were
      *            detected.
      *            </p>
      * @return A reference to this updated object so that method calls can be
@@ -351,14 +341,14 @@ public class GetContentModerationResult implements Serializable {
 
     /**
      * <p>
-     * The detected moderation labels and the time(s) they were detected.
+     * The detected unsafe content labels and the time(s) they were detected.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
      * together.
      *
      * @param moderationLabels <p>
-     *            The detected moderation labels and the time(s) they were
+     *            The detected unsafe content labels and the time(s) they were
      *            detected.
      *            </p>
      * @return A reference to this updated object so that method calls can be
@@ -374,7 +364,7 @@ public class GetContentModerationResult implements Serializable {
      * <p>
      * If the response is truncated, Amazon Rekognition Video returns this token
      * that you can use in the subsequent request to retrieve the next set of
-     * moderation labels.
+     * unsafe content labels.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -383,7 +373,7 @@ public class GetContentModerationResult implements Serializable {
      * @return <p>
      *         If the response is truncated, Amazon Rekognition Video returns
      *         this token that you can use in the subsequent request to retrieve
-     *         the next set of moderation labels.
+     *         the next set of unsafe content labels.
      *         </p>
      */
     public String getNextToken() {
@@ -394,7 +384,7 @@ public class GetContentModerationResult implements Serializable {
      * <p>
      * If the response is truncated, Amazon Rekognition Video returns this token
      * that you can use in the subsequent request to retrieve the next set of
-     * moderation labels.
+     * unsafe content labels.
      * </p>
      * <p>
      * <b>Constraints:</b><br/>
@@ -403,7 +393,7 @@ public class GetContentModerationResult implements Serializable {
      * @param nextToken <p>
      *            If the response is truncated, Amazon Rekognition Video returns
      *            this token that you can use in the subsequent request to
-     *            retrieve the next set of moderation labels.
+     *            retrieve the next set of unsafe content labels.
      *            </p>
      */
     public void setNextToken(String nextToken) {
@@ -414,7 +404,7 @@ public class GetContentModerationResult implements Serializable {
      * <p>
      * If the response is truncated, Amazon Rekognition Video returns this token
      * that you can use in the subsequent request to retrieve the next set of
-     * moderation labels.
+     * unsafe content labels.
      * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
@@ -426,7 +416,7 @@ public class GetContentModerationResult implements Serializable {
      * @param nextToken <p>
      *            If the response is truncated, Amazon Rekognition Video returns
      *            this token that you can use in the subsequent request to
-     *            retrieve the next set of moderation labels.
+     *            retrieve the next set of unsafe content labels.
      *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
@@ -437,141 +427,53 @@ public class GetContentModerationResult implements Serializable {
     }
 
     /**
-     * Returns the value of the billableDurationSeconds property for this
-     * object.
      * <p>
-     * <b>Constraints:</b><br/>
-     * <b>Range: </b>0 - <br/>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
      *
-     * @return The value of the billableDurationSeconds property for this
-     *         object.
+     * @return <p>
+     *         Version number of the moderation detection model that was used to
+     *         detect unsafe content.
+     *         </p>
      */
-    public Integer getBillableDurationSeconds() {
-        return billableDurationSeconds;
+    public String getModerationModelVersion() {
+        return moderationModelVersion;
     }
 
     /**
-     * Sets the value of billableDurationSeconds
      * <p>
-     * <b>Constraints:</b><br/>
-     * <b>Range: </b>0 - <br/>
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
      *
-     * @param billableDurationSeconds The new value for the
-     *            billableDurationSeconds property for this object.
+     * @param moderationModelVersion <p>
+     *            Version number of the moderation detection model that was used
+     *            to detect unsafe content.
+     *            </p>
      */
-    public void setBillableDurationSeconds(Integer billableDurationSeconds) {
-        this.billableDurationSeconds = billableDurationSeconds;
+    public void setModerationModelVersion(String moderationModelVersion) {
+        this.moderationModelVersion = moderationModelVersion;
     }
 
     /**
-     * Sets the value of the billableDurationSeconds property for this object.
      * <p>
-     * Returns a reference to this object so that method calls can be chained
-     * together.
-     * <p>
-     * <b>Constraints:</b><br/>
-     * <b>Range: </b>0 - <br/>
-     *
-     * @param billableDurationSeconds The new value for the
-     *            billableDurationSeconds property for this object.
-     * @return A reference to this updated object so that method calls can be
-     *         chained together.
-     */
-    public GetContentModerationResult withBillableDurationSeconds(Integer billableDurationSeconds) {
-        this.billableDurationSeconds = billableDurationSeconds;
-        return this;
-    }
-
-    /**
-     * Returns the value of the errorCode property for this object.
-     *
-     * @return The value of the errorCode property for this object.
-     */
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    /**
-     * Sets the value of errorCode
-     *
-     * @param errorCode The new value for the errorCode property for this
-     *            object.
-     */
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    /**
-     * Sets the value of the errorCode property for this object.
+     * Version number of the moderation detection model that was used to detect
+     * unsafe content.
+     * </p>
      * <p>
      * Returns a reference to this object so that method calls can be chained
      * together.
      *
-     * @param errorCode The new value for the errorCode property for this
-     *            object.
+     * @param moderationModelVersion <p>
+     *            Version number of the moderation detection model that was used
+     *            to detect unsafe content.
+     *            </p>
      * @return A reference to this updated object so that method calls can be
      *         chained together.
      */
-    public GetContentModerationResult withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-        return this;
-    }
-
-    /**
-     * Returns the value of the warnings property for this object.
-     *
-     * @return The value of the warnings property for this object.
-     */
-    public java.util.List<Warning> getWarnings() {
-        return warnings;
-    }
-
-    /**
-     * Sets the value of warnings
-     *
-     * @param warnings The new value for the warnings property for this object.
-     */
-    public void setWarnings(java.util.Collection<Warning> warnings) {
-        if (warnings == null) {
-            this.warnings = null;
-            return;
-        }
-
-        this.warnings = new java.util.ArrayList<Warning>(warnings);
-    }
-
-    /**
-     * Sets the value of the warnings property for this object.
-     * <p>
-     * Returns a reference to this object so that method calls can be chained
-     * together.
-     *
-     * @param warnings The new value for the warnings property for this object.
-     * @return A reference to this updated object so that method calls can be
-     *         chained together.
-     */
-    public GetContentModerationResult withWarnings(Warning... warnings) {
-        if (getWarnings() == null) {
-            this.warnings = new java.util.ArrayList<Warning>(warnings.length);
-        }
-        for (Warning value : warnings) {
-            this.warnings.add(value);
-        }
-        return this;
-    }
-
-    /**
-     * Sets the value of the warnings property for this object.
-     * <p>
-     * Returns a reference to this object so that method calls can be chained
-     * together.
-     *
-     * @param warnings The new value for the warnings property for this object.
-     * @return A reference to this updated object so that method calls can be
-     *         chained together.
-     */
-    public GetContentModerationResult withWarnings(java.util.Collection<Warning> warnings) {
-        setWarnings(warnings);
+    public GetContentModerationResult withModerationModelVersion(String moderationModelVersion) {
+        this.moderationModelVersion = moderationModelVersion;
         return this;
     }
 
@@ -596,12 +498,8 @@ public class GetContentModerationResult implements Serializable {
             sb.append("ModerationLabels: " + getModerationLabels() + ",");
         if (getNextToken() != null)
             sb.append("NextToken: " + getNextToken() + ",");
-        if (getBillableDurationSeconds() != null)
-            sb.append("BillableDurationSeconds: " + getBillableDurationSeconds() + ",");
-        if (getErrorCode() != null)
-            sb.append("ErrorCode: " + getErrorCode() + ",");
-        if (getWarnings() != null)
-            sb.append("Warnings: " + getWarnings());
+        if (getModerationModelVersion() != null)
+            sb.append("ModerationModelVersion: " + getModerationModelVersion());
         sb.append("}");
         return sb.toString();
     }
@@ -621,10 +519,8 @@ public class GetContentModerationResult implements Serializable {
         hashCode = prime * hashCode + ((getNextToken() == null) ? 0 : getNextToken().hashCode());
         hashCode = prime
                 * hashCode
-                + ((getBillableDurationSeconds() == null) ? 0 : getBillableDurationSeconds()
+                + ((getModerationModelVersion() == null) ? 0 : getModerationModelVersion()
                         .hashCode());
-        hashCode = prime * hashCode + ((getErrorCode() == null) ? 0 : getErrorCode().hashCode());
-        hashCode = prime * hashCode + ((getWarnings() == null) ? 0 : getWarnings().hashCode());
         return hashCode;
     }
 
@@ -664,19 +560,10 @@ public class GetContentModerationResult implements Serializable {
         if (other.getNextToken() != null
                 && other.getNextToken().equals(this.getNextToken()) == false)
             return false;
-        if (other.getBillableDurationSeconds() == null ^ this.getBillableDurationSeconds() == null)
+        if (other.getModerationModelVersion() == null ^ this.getModerationModelVersion() == null)
             return false;
-        if (other.getBillableDurationSeconds() != null
-                && other.getBillableDurationSeconds().equals(this.getBillableDurationSeconds()) == false)
-            return false;
-        if (other.getErrorCode() == null ^ this.getErrorCode() == null)
-            return false;
-        if (other.getErrorCode() != null
-                && other.getErrorCode().equals(this.getErrorCode()) == false)
-            return false;
-        if (other.getWarnings() == null ^ this.getWarnings() == null)
-            return false;
-        if (other.getWarnings() != null && other.getWarnings().equals(this.getWarnings()) == false)
+        if (other.getModerationModelVersion() != null
+                && other.getModerationModelVersion().equals(this.getModerationModelVersion()) == false)
             return false;
         return true;
     }
