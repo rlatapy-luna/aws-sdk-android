@@ -1,5 +1,31 @@
 # Change Log - AWS SDK for Android
 
+## [Release 2.16.0](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.16.0)
+
+### New Features
+
+- **AWS Mobile Client**
+  - **Breaking API Change**
+    - `SignUpResult` available in the user callback provided during sign up now contains UserSub(UID)
+    - Deprecated APIs `getCredentialsProvider`, `setCredentialsProvider`, `initialize(Context)` and `initialize(Context, AWSStartupHandler)` have been removed
+    - `confirmSignIn(final Map<String, String> signInChallengeResponse)` now throws `IllegalStateException` if `confirmSignIn` is called after signIn has succeeded. This matches the behavior of the overloaded version of this method, viz. `confirmSignIn(final String signInChallengeResponse, final Callback<SignInResult> callback)`
+  - AWSMobileClient now supports Cognito Custom Authentication flow. See relevant [cognito docs](https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html#amazon-cognito-user-pools-custom-authentication-flow) and [amplify docs](https://aws-amplify.github.io/docs/android/authentication#customizing-authentication-flow) for details
+
+- **Amazon CognitoIdentityProvider**
+  - **Breaking API Change** `SignUpHandler` now receives `SignUpResult` upon success instead of a ConfirmationState and `CognitoUserCodeDeliveryDetails`
+  - `signUpInBackground` and `signUp` now receive `SignUpResult` in the `onSuccess` callback
+
+- **Amazon SNS**
+  - Updated model to support latest Amazon SNS features such as `TagResource` function. This resolves [Issue# 1020](https://github.com/aws-amplify/aws-sdk-android/issues/1020). 
+
+### Misc. Updates
+
+- Model updates for the following services
+  - Amazon SES
+  - Amazon SNS
+  - Amazon Textract
+  - Amazon Transcribe
+
 ## [Release 2.15.2](https://github.com/aws/aws-sdk-android/releases/tag/release_v2.15.2)
 
 ### Bug Fixes
